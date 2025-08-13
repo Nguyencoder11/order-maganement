@@ -10,9 +10,16 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
+    <!-- Kich hoat cac annotation -->
     <mvc:annotation-driven />
+
+    <!-- Cau hinh cho phep truy cap cac file trong thu muc resources o webapp -->
     <mvc:resources mapping="/resources/**" location="/resources/"/>
 
+    <!-- Quet package controller de dang ky cac bean -->
+    <context:component-scan base-package="com.gms.solution.controller"/>
+
+    <!-- Cau hinh Thymeleaf xu ly view .html dat tai WEB-INF su dung ma hoa UTF-8 -->
     <bean id="templateResolver" class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
         <property name="prefix" value="/WEB-INF/views/" />
         <property name="suffix" value=".html" />
