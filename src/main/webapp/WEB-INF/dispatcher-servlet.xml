@@ -16,6 +16,8 @@
     <!-- Cau hinh cho phep truy cap cac file trong thu muc resources o webapp -->
     <mvc:resources mapping="/resources/**" location="/resources/"/>
 
+    <mvc:default-servlet-handler />
+
     <!-- Quet package controller de dang ky cac bean -->
     <context:component-scan base-package="com.gms.solution.controller"/>
 
