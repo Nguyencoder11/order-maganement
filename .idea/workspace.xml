@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fe7c2a0f-e9b4-4b7e-a35f-a4b4adde267d" name="Changes" comment="" />
+    <list default="true" id="fe7c2a0f-e9b4-4b7e-a35f-a4b4adde267d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,9 +16,32 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Nguyencoder11&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Nguyencoder11/order-maganement.git&quot;,
+    &quot;accountId&quot;: &quot;a395f2fc-caf3-402a-9803-48398be9465a&quot;
+  }
+}</component>
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="true" />
+    <option name="FILTER_DEBUG" value="true" />
+    <option name="CUSTOM_FILTER" />
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
@@ -29,6 +54,9 @@
   &quot;associatedIndex&quot;: 7
 }</component>
   <component name="ProjectId" id="31BOw9OWHKIpw7vuO8ZnESM3bhs" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -40,18 +68,23 @@
     "Maven.order-management [clean,install].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "Smart Tomcat.Order Management.executor": "Run",
+    "git-widget-placeholder": "feature/register-v2",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
     "settings.editor.selected.configurable": "MavenSettings",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\GMSolution\order-management\src\main\webapp\WEB-INF\views" />
       <recent name="E:\GMSolution\order-management\src\main\webapp" />
     </key>
   </component>
@@ -113,11 +146,27 @@
       <workItem from="1754996127335" duration="12000" />
       <workItem from="1754996151620" duration="47000" />
       <workItem from="1754996237881" duration="19000" />
-      <workItem from="1754996297217" duration="421000" />
+      <workItem from="1754996297217" duration="1111000" />
+      <workItem from="1755053954465" duration="4494000" />
+      <workItem from="1755059261624" duration="12545000" />
+      <workItem from="1755073354375" duration="4547000" />
+      <workItem from="1755078088899" duration="3303000" />
+      <workItem from="1755081579281" duration="1911000" />
+      <workItem from="1755136252506" duration="91000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/gms/solution/model/dto/RegisterDTO.java</url>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

@@ -1,0 +1,63 @@
+/* Stylesheet for Homepage index */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+input {
+    outline: none;
+    border: none;
+}
+
+.header {
+    background: #199a19;
+    color: #ffffff;
+}
+
+.container {
+    width: 100%;
+    display: grid;
+    padding: 10px 24px;
+    grid-template-columns: auto 1fr auto;
+    gap: 32px;
+    align-items: center;
+}
+
+.title-logo {
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.search-box {
+    display: grid;
+    justify-content: center;
+}
+
+.search-box input {
+    max-width: 450px;
+    width: 400px;
+    border-radius: 5px;
+    padding: 8px;
+    color: #575757;
+}
+
+.left-header {
+    float: right;
+}
+
+.cart-link,
+.register-link,
+.login-link {
+    text-align: center;
+}
+
+.left-header a {
+    margin: 0 10px;
+}
