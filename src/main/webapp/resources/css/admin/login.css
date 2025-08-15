@@ -1,0 +1,16 @@
+.admin-login-btn {
+    background: #1a1aad;
+}
+
+.admin-login-btn:hover {
+    background: #2626e2;
+}
+
+.login-error {
+    margin: 0.375rem 0;
+    color: #bc1d1d;
+}
+
+.admin-login-btn {
+    margin: 10px 0;
+}

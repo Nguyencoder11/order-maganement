@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Dashboard</title>
+    <link rel="stylesheet" th:href="@{/resources/css/admin/common.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <header class="dashboard-header">
+        <h1>Dashboard</h1>
+        <div class="profile">
+            <span>Admin</span>
+            <img src="https://static.vecteezy.com/system/resources/previews/029/156/453/non_2x/admin-business-icon-businessman-business-people-male-avatar-profile-pictures-man-in-suit-for-your-web-site-design-logo-app-ui-solid-style-illustration-design-on-white-background-eps-10-vector.jpg" alt="Avatar" >
+        </div>
+    </header>
+    <main>
+        <aside class="dashboard-sidebar">
+            <div class="sidebar">
+                <ul>
+                    <li><a th:href="@{/admin/dashboard}" class="menu-link">Trang chủ</a></li>
+                    <li><a th:href="@{/admin/products}" class="menu-link">Quản lý sản phẩm</a></li>
+                    <li><a th:href="@{/admin/users}" class="menu-link">Quản lý người dùng</a></li>
+                    <li><a th:href="@{/admin/chat}" class="menu-link">Chat</a></li>
+                </ul>
+            </div>
+        </aside>
+        <section class="dashboard-content">
+            <div class="tab-content" th:replace="${pageContent} :: content"></div>
+        </section>
+    </main>
+</body>
+</html>

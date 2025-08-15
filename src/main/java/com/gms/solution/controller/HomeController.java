@@ -25,8 +25,17 @@ public class HomeController {
     }
 
     // Duong dan /home tra ve trang index.html
+//    @GetMapping("/home")
+//    public ModelAndView home(){
+//        ModelAndView mav = new ModelAndView("index");
+//        mav.addObject("header", "fragments/header");
+//        mav.addObject("footer", "fragments/footer");
+//        return mav;
+//    }
     @GetMapping("/home")
-    public String home(){
+    public String home() {
         return "index";
     }
+
+
 }

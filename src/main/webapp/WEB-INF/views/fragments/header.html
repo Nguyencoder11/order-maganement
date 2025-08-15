@@ -1,0 +1,28 @@
+<header class="header">
+    <div th:fragment="header" class="container">
+        <div class="title-logo">
+            <a th:href="@{/home}">OrderMan</a>
+        </div>
+        <div class="search-box">
+            <input type="text" name="search-input" id="search-input" placeholder="Tìm kiếm sản phẩm..." th:value="''" />
+        </div>
+        <div class="left-header">
+            <a th:href="@{/cart}" class="cart-link">
+                <i class="fa-solid fa-cart-shopping"></i> Giỏ hàng
+            </a>
+
+            <!-- Neu chua dang nhap hien thi link dang nhap va dang xuat -->
+            <span>
+                <a th:href="@{/register}" class="register-link">Đăng ký</a>
+                <a th:href="@{/login}" class="login-link">Đăng nhập</a>
+            </span>
+
+            <!-- Neu da dang nhap thi hien thi ten nguoi dung va avatar -->
+    <!--        <span th:if="''">-->
+    <!--            <span th:text="''"></span>-->
+    <!--            <img th:src="''" alt="Avatar">-->
+    <!--            <a th:href="@{/logout}" class="logout-link">Đăng xuất</a>-->
+    <!--        </span>-->
+        </div>
+    </div>
+</header>
