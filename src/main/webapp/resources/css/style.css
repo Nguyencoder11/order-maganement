@@ -54,10 +54,24 @@ input {
 
 .cart-link,
 .register-link,
-.login-link {
+.login-link,
+.logout-link {
     text-align: center;
 }
 
 .left-header a {
     margin: 0 10px;
+}
+
+.footer {
+    background: black;
+}
+
+.footer .container {
+    display: flex;
+    justify-content: center;
+}
+
+.footer p {
+    color: #fff;
 }
