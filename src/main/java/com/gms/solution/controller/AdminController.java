@@ -26,13 +26,15 @@ public class AdminController {
     private static final String ADMIN_USER = "admin";
     private static final String ADMIN_PASSWORD = "admin";
 
+    // Hien thi trang login cua admin
     @GetMapping("/login")
-    public String adminLogin() {
+    public String adminLoginPage() {
         return "admin/login-admin";
     }
 
+    // Xu ly dang nhap tai khoan cua admin
     @PostMapping("/login")
-    public String processLogin(@RequestParam String username,
+    public String adminLogin(@RequestParam String username,
                                @RequestParam String password,
                                HttpSession session,  // Luu session dang nhap cua admin
                                Model model
@@ -47,8 +49,9 @@ public class AdminController {
         }
     }
 
+    // Hien thi trang dashboard khi dang nhap dc tai khoan admin
     @GetMapping("/dashboard")
-    public String dashboard(HttpSession session) {
+    public String adminDashboard(HttpSession session) {
         if (session.getAttribute("adminUser") == null) {
             return "redirect:/admin/login";
         }
@@ -69,7 +72,7 @@ public class AdminController {
 //        return new ModelAndView();
 //    }
 
-
+    // Hien thi noi dung tab Quan ly san pham
     @GetMapping("/products")
     public ModelAndView showProductsTab() {
         ModelAndView mav = new ModelAndView("admin/dashboard");
@@ -77,6 +80,7 @@ public class AdminController {
         return mav;
     }
 
+    // Hien thi noi dung theo tab Quan ly nguoi dung
     @GetMapping("/users")
     public ModelAndView showUsersTab() {
         ModelAndView mav = new ModelAndView("admin/dashboard");
@@ -84,6 +88,7 @@ public class AdminController {
         return mav;
     }
 
+    // Hien thi noi dung theo tab Chat
     @GetMapping("/chat")
     public ModelAndView showChatTab() {
         ModelAndView mav = new ModelAndView("admin/dashboard");
@@ -91,6 +96,7 @@ public class AdminController {
         return mav;
     }
 
+    // Hien thi noi dung trang tao san pham khi click vao nut Them moi
     @GetMapping("/products/create")
     public ModelAndView showCreateProductWindow() {
         ModelAndView mav = new ModelAndView("admin/dashboard");

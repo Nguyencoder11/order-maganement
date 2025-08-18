@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang chủ</title>
+    <title th:text="${pageTitle}"></title>
     <link rel="stylesheet" th:href="@{/resources/css/style.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
@@ -11,7 +11,7 @@
     <header th:replace="fragments/header :: header"></header>
 
     <main class="content">
-        <div class="fragment-content"></div>
+        <div th:replace="${mainContent} :: mainContent" class="fragment-content"></div>
     </main>
 
     <footer th:replace="fragments/footer :: footer"></footer>
