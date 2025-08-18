@@ -8,7 +8,8 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd"
+       default-autowire="byName">
 
     <!-- Kich hoat cac annotation -->
     <mvc:annotation-driven />
@@ -20,6 +21,7 @@
 
     <!-- Quet package controller de dang ky cac bean -->
     <context:component-scan base-package="com.gms.solution.controller"/>
+    <context:component-scan base-package="com.gms.solution.config" />
 
     <!-- Cau hinh Thymeleaf xu ly view .html dat tai WEB-INF su dung ma hoa UTF-8 -->
     <bean id="templateResolver" class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">

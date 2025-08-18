@@ -3,6 +3,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: #000;
 }
 
 a {
@@ -10,7 +16,11 @@ a {
     color: #ffffff;
 }
 
-input {
+ul {
+    list-style: none;
+}
+
+input, button {
     outline: none;
     border: none;
 }
@@ -23,7 +33,7 @@ input {
 .container {
     width: 100%;
     display: grid;
-    padding: 10px 24px;
+    padding: 10px 30px;
     grid-template-columns: auto 1fr auto;
     gap: 32px;
     align-items: center;
@@ -38,24 +48,44 @@ input {
 .search-box {
     display: grid;
     justify-content: center;
+    align-items: center;
 }
 
-.search-box input {
-    max-width: 450px;
+.search-box-area {
     width: 400px;
+    max-width: 450px;
     border-radius: 5px;
     padding: 8px;
+    background: #fff;
+    position: relative;
+}
+
+.search-box-area input {
+    width: 100%;
     color: #575757;
+}
+
+.search-box-area span {
+    position: absolute;
+    right: 8px;
+    cursor: pointer;
+}
+
+.search-box-area span i {
+    color: #000;
 }
 
 .left-header {
     float: right;
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    gap: 20px;
 }
 
 .cart-link,
 .register-link,
-.login-link,
-.logout-link {
+.login-link {
     text-align: center;
 }
 
@@ -63,15 +93,117 @@ input {
     margin: 0 10px;
 }
 
-.footer {
-    background: black;
+/*  Stylesheet for LoggerUser  */
+.user-image {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
 }
 
-.footer .container {
-    display: flex;
-    justify-content: center;
+.loggedUser {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
 }
 
-.footer p {
+.user-popup {
+    position: absolute;
+    background: #fff;
+    top: 48px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.75);
+}
+
+.user-popup ul li a {
+    color: #000;
+    display: block;
+    margin: 0;
+    padding: 10px;
+}
+
+.user-popup {
+    display: none;
+}
+
+.user-popup ul li a:hover {
+    background: #20A920;
+}
+
+.user-popup::before {
+    content: "";
+    position: absolute;
+    top: -7px;
+    width: 151px;
+    height: 13px;
+    background: transparent;
+}
+
+.loggedUser:hover .user-popup {
+    display: block;
+}
+
+.product-view {
+    width: 100%;
+    background: #ddd;
+}
+
+.product-by-category {
+    padding: 0 64px;
+}
+
+.category-wrapper {
+    width: 100%;
+}
+
+.category-name {
+    text-align: center;
+    padding: 1.625rem 0;
+}
+
+.product-items-wrapper {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 30px;
+    padding: 0 10px;
+    padding-bottom: 24px;
+}
+
+.product-item {
+    background: #e8e8e8;
+    border-radius: 10px;
+    width: 100%;
+    padding: 16px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.25);
+    max-height: 450px;
+}
+
+.product-image {
+    width: inherit;
+    border-radius: inherit;
+    max-height: 250px;
+}
+
+.product-image img {
+    width: inherit;
+    border-radius: inherit;
+    max-height: inherit;
+}
+
+.product-details {
+    padding: 10px 0;
+}
+
+.product-item button {
+    width: 100%;
+    padding: 12px;
+    background: #199a19;
     color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.product-item button:hover {
+    background: #20A920;
 }

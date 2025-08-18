@@ -8,6 +8,7 @@
 package com.gms.solution.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * ProductController.java
