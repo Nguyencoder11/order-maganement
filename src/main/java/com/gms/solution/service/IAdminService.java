@@ -13,4 +13,5 @@ package com.gms.solution.service;
  * @author Nguyen
  */
 public interface IAdminService {
+    boolean login(String username, String password);
 }

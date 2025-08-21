@@ -20,6 +20,7 @@
             <div class="sidebar">
                 <ul>
                     <li><a th:href="@{/admin/dashboard}" class="menu-link">Trang chủ</a></li>
+                    <li><a th:href="@{/admin/categories}" class="menu-link">Quản lý danh mục</a></li>
                     <li><a th:href="@{/admin/products}" class="menu-link">Quản lý sản phẩm</a></li>
                     <li><a th:href="@{/admin/users}" class="menu-link">Quản lý người dùng</a></li>
                     <li><a th:href="@{/admin/chat}" class="menu-link">Chat</a></li>
@@ -27,7 +28,7 @@
             </div>
         </aside>
         <section class="dashboard-content">
-            <div class="tab-content" th:replace="${pageContent} :: content"></div>
+            <div th:replace="~{${content} :: content}" class="tab-content"></div>
         </section>
     </main>
 </body>

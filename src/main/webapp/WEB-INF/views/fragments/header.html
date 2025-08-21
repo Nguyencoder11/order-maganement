@@ -19,7 +19,7 @@
             <!-- Neu chua dang nhap hien thi link dang nhap va dang xuat -->
             <div th:if="${loggedInUser == null}" class="unloggedUser">
                 <a th:href="@{/register}" class="register-link">Đăng ký</a>
-                <a th:href="@{/login}" class="login-link">Đăng nhập</a>
+                <a th:href="@{/auth/login}" class="login-link">Đăng nhập</a>
             </div>
 
             <!-- Neu da dang nhap thi hien thi ten nguoi dung va avatar -->
@@ -31,7 +31,7 @@
                     <ul>
                         <li><a th:href="@{/users/profile}" >Profile</a></li>
                         <li><a th:href="@{/users/reset-password}">Thay đổi mật khẩu</a></li>
-                        <li><a th:href="@{/logout}" >Đăng xuất</a></li>
+                        <li><a th:href="@{/auth/logout}" >Đăng xuất</a></li>
                     </ul>
                 </div>
             </div>

@@ -15,12 +15,21 @@
     <mvc:annotation-driven />
 
     <!-- Cau hinh cho phep truy cap cac file trong thu muc resources o webapp -->
-    <mvc:resources mapping="/resources/**" location="/resources/"/>
+    <mvc:resources mapping="/resources/**" location="/resources/">
+        <mvc:cache-control no-cache="true" no-store="true" must-revalidate="true"/>
+        <mvc:resource-chain resource-cache="false">
+            <mvc:resolvers>
+                <mvc:version-resolver>
+                    <mvc:content-version-strategy patterns="/**"/>
+                </mvc:version-resolver>
+            </mvc:resolvers>
+        </mvc:resource-chain>
+    </mvc:resources>
 
     <mvc:default-servlet-handler />
 
     <!-- Quet package controller de dang ky cac bean -->
-    <context:component-scan base-package="com.gms.solution.controller"/>
+    <context:component-scan base-package="com.gms.solution.controller" />
     <context:component-scan base-package="com.gms.solution.config" />
 
     <!-- Cau hinh Thymeleaf xu ly view .html dat tai WEB-INF su dung ma hoa UTF-8 -->
@@ -29,6 +38,7 @@
         <property name="suffix" value=".html" />
         <property name="templateMode" value="HTML" />
         <property name="characterEncoding" value="UTF-8" />
+        <property name="cacheable" value="false" />
     </bean>
 
     <bean id="templateEngine" class="org.thymeleaf.spring5.SpringTemplateEngine">

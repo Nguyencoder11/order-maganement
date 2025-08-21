@@ -9,6 +9,8 @@ package com.gms.solution.service;
 
 import com.gms.solution.model.entity.User;
 
+import java.util.List;
+
 /**
  * IUserService.java
  *
@@ -19,4 +21,7 @@ public interface IUserService {
     boolean existByEmail(String email);
     boolean existByUsername(String username);
     User login(String username, String password);
+    User findByUsername(String username);
+    void changePassword(String username, String newPassword);
+    List<User> getAllUsers();
 }

@@ -1,6 +1,65 @@
-<div th:fragment="content">
-    <h3>Danh sách người dùng</h3>
-    <table>
-
-    </table>
+<div th:fragment="content" class="user-fragment">
+    <div class="div-flex">
+        <h3>Danh sách người dùng</h3>
+        <a th:href="@{#}">
+            <button type="button">
+                Thêm mới
+            </button>
+        </a>
+    </div>
+    <div class="table-show">
+        <table class="table-data user-table">
+            <thead>
+            <tr>
+                <th>STT</th>
+                <th>Họ tên</th>
+                <th>Email</th>
+                <th>Tên đăng nhập</th>
+                <th>Mật khẩu</th>
+                <th>Số điện thoại</th>
+                <th>Địa chỉ</th>
+                <th>Trạng thái</th>
+                <th>Ngày tạo</th>
+                <th>Ngày cập nhật</th>
+                <th>Hành động</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user, iterStat : ${users}">
+                <td th:text="${iterStat.count}"></td>
+                <td th:text="${user.fullName}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.password}"></td>
+                <td th:text="${user.phone}"></td>
+                <td th:text="${user.address}"></td>
+                <td>
+                    <span th:if="${user.enabled}" style="color: green;">✔ Active</span>
+                    <span th:if="${!user.enabled}" style="color: red;">✖ Locked</span>
+                </td>
+                <td th:text="${user.createdAt}"></td>
+                <td th:text="${user.updatedAt}"></td>
+                <td class="action">
+                    <a th:href="@{#}">Sửa</a>
+                    <a th:href="@{#}">Xóa</a>
+                    <label class="switch">
+                        <input type="checkbox"
+                                th:checked="${user.enabled}"
+                                th:attr="data-id=${user.id}"
+                                onchange="toggleStatus(this)">
+                        <span class="slider round"></span>
+                    </label>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="pagination">
+        <a href="#">1</a>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <a href="#">...</a>
+        <a href="#">9</a>
+        <a href="#">10</a>
+    </div>
 </div>

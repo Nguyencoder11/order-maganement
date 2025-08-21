@@ -29,7 +29,7 @@
               </div>
               <div style="height: 20px;"></div>
               <button type="submit" class="btn btn-primary">Đăng ký</button>
-              <p style="text-align: center; margin: 0.375rem 0; margin-top: 16px;">Bạn đã có tài khoản? <a th:href="@{/login}">Đăng nhập</a></p>
+              <p style="text-align: center; margin: 0.375rem 0; margin-top: 16px;">Bạn đã có tài khoản? <a th:href="@{/auth/login}">Đăng nhập</a></p>
               <p class="error" th:if="${error}" style="color: red; text-align: center; margin: 0.375rem 0; margin-top: 16px;" th:text="${error}"></p>
           </form>
       </div>
