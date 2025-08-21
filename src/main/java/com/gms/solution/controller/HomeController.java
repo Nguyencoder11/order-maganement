@@ -7,12 +7,17 @@
 
 package com.gms.solution.controller;
 
+import com.gms.solution.model.entity.Category;
+import com.gms.solution.model.entity.Product;
+import com.gms.solution.service.ICategoryService;
+import com.gms.solution.service.IProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * HomeController.java
@@ -21,6 +26,13 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 public class HomeController {
+
+    @Autowired
+    private IProductService productService;
+
+    @Autowired
+    private ICategoryService categoryService;
+
     // Tao mapping chuyen huong toi duong dan /home khi chay ung dung
     @GetMapping("/")
     public String homePage() {
@@ -35,6 +47,10 @@ public class HomeController {
         // Them hien thi san pham cho layout chung
         mav.addObject("mainContent", "fragments/product");
         mav.addObject("pageTitle", "Trang chủ");
+
+        List<Category> categories = categoryService.getAllCategories();
+        mav.addObject("categories", categories);
+
         return mav;
     }
 

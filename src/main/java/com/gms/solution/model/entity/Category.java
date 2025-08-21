@@ -19,6 +19,15 @@ import java.util.List;
  *
  * @author Nguyen
  */
+// NamedQuery lay danh sach san pham theo danh muc
+@NamedQuery(
+        name = "Category.findAllWithProducts",
+        query = "SELECT distinct c from Category c left join fetch c.products"
+)
+@NamedQuery(
+        name = "Category.getAllCategoryName",
+        query = "SELECT c from Category c"
+)
 @Entity
 @Table(name = "categories")
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -38,6 +47,9 @@ public class Category {
 
     @Column(name = "updated_at")
     LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    private List<Product> products;
 
     public Long getId() {
         return id;
@@ -79,4 +91,11 @@ public class Category {
         this.updatedAt = updatedAt;
     }
 
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
 }

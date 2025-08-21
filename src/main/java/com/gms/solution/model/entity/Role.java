@@ -12,6 +12,8 @@ import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 /**
  * Role.java
  *
@@ -29,6 +31,9 @@ public class Role {
     @Column(name = "role_name", unique = true, nullable = false)
     RoleName roleName;
 
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
+    List<User> users;
+
     public Long getId() {
         return id;
     }
@@ -43,5 +48,13 @@ public class Role {
 
     public void setRoleName(RoleName roleName) {
         this.roleName = roleName;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }

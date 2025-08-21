@@ -73,7 +73,7 @@ public class UserController {
             return "register";
         }
 
-        return "redirect:/login";
+        return "redirect:/auth/login";
     }
 
     // Xem thong tin tai khoan
@@ -85,11 +85,38 @@ public class UserController {
         return mav;
     }
 
-    // Thay doi mat khau
-    @GetMapping("/users/reset-password")
-    public ModelAndView resetPasswordPage() {
-        ModelAndView mav = new ModelAndView("users/reset-password");
-        return mav;
+    // Quen mat khau
+    @GetMapping("/forget-password")
+    public String forgetPasswordPage(Model model) {
+        model.addAttribute("username", "");
+        return "users/forget-password";
+    }
+
+    @PostMapping("/forget-password")
+    public String forgetPassword(@RequestParam("username") String username, Model model) {
+        User user = userService.findByUsername(username);
+        if (user == null) {
+            model.addAttribute("error", "Tên người dùng không tồn tại");
+            return "users/forget-password";
+        }
+        model.addAttribute("username", username);
+        return "users/reset-password";
+    }
+
+    @PostMapping("/reset-password")
+    public String resetPassword(@RequestParam("username") String username,
+                                @RequestParam("new-password") String newPassword,
+                                @RequestParam("confirm-new-password") String confirmNewPassword,
+                                Model model) {
+        if (!newPassword.equals(confirmNewPassword)) {
+            model.addAttribute("error", "Mật khẩu xác nhận không khớp");
+            model.addAttribute("username", username);
+            return "users/reset-password";
+        }
+
+        userService.changePassword(username, newPassword);
+        model.addAttribute("message", "Mật khẩu đã được thay đổi thành công. Bạn có thể đăng nhập ngay");
+        return "redirect:/auth/login";
     }
 
 }

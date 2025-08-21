@@ -164,7 +164,7 @@ input, button {
 
 .product-items-wrapper {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 30px;
     padding: 0 10px;
     padding-bottom: 24px;
@@ -177,18 +177,21 @@ input, button {
     padding: 16px;
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.25);
     max-height: 450px;
+    /*height: 400px;*/
 }
 
 .product-image {
     width: inherit;
     border-radius: inherit;
     max-height: 250px;
+    height: 200px;
 }
 
 .product-image img {
     width: inherit;
     border-radius: inherit;
     max-height: inherit;
+    height: inherit;
 }
 
 .product-details {
@@ -206,4 +209,19 @@ input, button {
 
 .product-item button:hover {
     background: #20A920;
+}
+
+.rating-stars .icon-star {
+    color: #c5c5c5;
+}
+
+.product-name {
+    font-weight: 600;
+    color: #1d95ce;
+    font-size: 18px;
+}
+
+.product-description {
+    color: #818181;
+    font-weight: 500;
 }
