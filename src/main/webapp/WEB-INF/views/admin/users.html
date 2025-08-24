@@ -37,8 +37,8 @@
                     <span th:if="${user.enabled}" style="color: green;">✔ Active</span>
                     <span th:if="${!user.enabled}" style="color: red;">✖ Locked</span>
                 </td>
-                <td th:text="${user.createdAt}"></td>
-                <td th:text="${user.updatedAt}"></td>
+                <td th:text="${#temporals.format(user.createdAt, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                <td th:text="${#temporals.format(user.updatedAt, 'dd-MM-yyyy HH:mm:ss')}"></td>
                 <td class="action">
                     <a th:href="@{#}">Sửa</a>
                     <a th:href="@{#}">Xóa</a>

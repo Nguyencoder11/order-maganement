@@ -7,12 +7,23 @@
 
 package com.gms.solution.service.impl;
 
+import com.gms.solution.model.entity.Category;
 import com.gms.solution.model.entity.Product;
+import com.gms.solution.repository.CategoryRepository;
 import com.gms.solution.repository.ProductRepository;
 import com.gms.solution.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -24,6 +35,8 @@ import java.util.List;
 public class ProductServiceImpl implements IProductService {
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Override
     public List<Product> getAllProducts() {
@@ -36,9 +49,104 @@ public class ProductServiceImpl implements IProductService {
                 .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
     }
 
+    @Transactional
     @Override
-    public Product updateProduct(Product product) {
-        return productRepository.save(product);
+    public void createProduct(Product product, MultipartFile file) {
+        if (product.getCategory() != null && product.getCategory().getId() != null) {
+            Category category = categoryRepository.findById(product.getCategory().getId())
+                    .orElseThrow(() -> new RuntimeException("Category not found with id: " + product.getCategory().getId()));
+            product.setCategory(category);
+        }
+
+        try {
+            if (file != null && !file.isEmpty()) {
+                String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+                String uploadDir = "uploads/products/";
+                Path uploadPath = Paths.get(uploadDir);
+
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                Path filePath = uploadPath.resolve(fileName);
+                Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+                product.setImagePath("/" + uploadDir + fileName);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        product.setCreatedAt(LocalDateTime.now());
+        product.setUpdatedAt(LocalDateTime.now());
+
+        // Log để debug
+        System.out.println("=== Creating product ===");
+        System.out.println("ID: " + product.getId());
+        System.out.println("Name: " + product.getName());
+        System.out.println("Price: " + product.getPrice());
+        System.out.println("Stock: " + product.getStock());
+        System.out.println("Description: " + product.getDescription());
+        System.out.println("Category: " + (product.getCategory() != null ? product.getCategory().getName() : "null"));
+        System.out.println("ImagePath: " + product.getImagePath());
+
+        productRepository.save(product);
+    }
+
+    @Transactional
+    @Override
+    public void updateProduct(Long id, Product product, MultipartFile file) {
+        Product existingProduct = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + product.getId()));
+
+        existingProduct.setName(product.getName());
+        existingProduct.setPrice(product.getPrice());
+        existingProduct.setStock(product.getStock());
+        existingProduct.setDescription(product.getDescription());
+        existingProduct.setUpdatedAt(LocalDateTime.now());
+
+        if (product.getCategory() != null && product.getCategory().getId() != null) {
+            Category category = categoryRepository.findById(product.getCategory().getId())
+                    .orElseThrow(() -> new RuntimeException("Category not found with id: " + product.getCategory().getId()));
+            existingProduct.setCategory(category);
+        }
+
+        try {
+            if (file != null && !file.isEmpty()) {
+                String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+                String uploadDir = "uploads/products/";
+                Path uploadPath = Paths.get(uploadDir);
+
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                Path filePath = uploadPath.resolve(fileName);
+                Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+                existingProduct.setImagePath("/" + uploadDir + fileName);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Log để debug
+        System.out.println("=== Updating product ===");
+        System.out.println("ID: " + existingProduct.getId());
+        System.out.println("Name: " + existingProduct.getName());
+        System.out.println("Price: " + existingProduct.getPrice());
+        System.out.println("Stock: " + existingProduct.getStock());
+        System.out.println("Description: " + existingProduct.getDescription());
+        System.out.println("Category: " + (existingProduct.getCategory() != null ? existingProduct.getCategory().getName() : "null"));
+        System.out.println("ImagePath: " + existingProduct.getImagePath());
+
+        productRepository.save(existingProduct);
+    }
+
+
+    @Override
+    public void deleteProduct(Long id) {
+        productRepository.deleteById(id);
     }
 
 }

@@ -26,7 +26,7 @@ import java.util.List;
 )
 @NamedQuery(
         name = "Category.getAllCategoryName",
-        query = "SELECT c from Category c"
+        query = "SELECT c from Category c order by c.name asc"
 )
 @Entity
 @Table(name = "categories")

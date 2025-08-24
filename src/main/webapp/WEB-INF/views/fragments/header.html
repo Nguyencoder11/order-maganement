@@ -29,7 +29,7 @@
                      alt="Avatar">
                 <div class="user-popup">
                     <ul>
-                        <li><a th:href="@{/users/profile}" >Profile</a></li>
+                        <li><a th:href="@{/users/profile/{id}(id=${loggedInUser.id})}" >Profile</a></li>
                         <li><a th:href="@{/users/reset-password}">Thay đổi mật khẩu</a></li>
                         <li><a th:href="@{/auth/logout}" >Đăng xuất</a></li>
                     </ul>

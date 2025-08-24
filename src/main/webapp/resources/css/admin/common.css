@@ -20,6 +20,11 @@ input, textarea, select {
     border-radius: 4px;
 }
 
+button {
+    outline: none;
+    border: none;
+}
+
 table {
     border-collapse: collapse;
     width: 100%;
@@ -228,14 +233,25 @@ main {
 
 .form-two-group {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    /*align-items: center;*/
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    grid-template-areas:
+        "name category"
+        "price stock"
+        "description image";
     margin: 12px 0;
     background: #c1c1c1;
-    padding: 14px;
+    padding: 16px;
     border-radius: 10px;
-    gap: 10px 20px;
+    gap: 16px 24px;
 }
+
+.form-group:nth-child(1) { grid-area: name; }
+.form-group:nth-child(2) { grid-area: category; }
+.form-group:nth-child(3) { grid-area: price; }
+.form-group:nth-child(4) { grid-area: stock; }
+.form-group:nth-child(5) { grid-area: description; }
+.form-group.image-choice { grid-area: image; }
 
 .form-two-group .form-group {
     display: flex;
@@ -255,6 +271,7 @@ main {
 
 .form-two-group .form-group textarea {
     height: 120px;
+    padding: 5px;
 }
 
 .image-choice {
@@ -264,6 +281,9 @@ main {
 
 .image-upload-wrapper {
     position: relative;
+    max-width: 180px;
+    width: 175px;
+    height: 175px;
 }
 
 .image-upload-wrapper input[type="file"] {
@@ -271,60 +291,116 @@ main {
 }
 
 .upload-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 120px;
-    height: 120px;
+    display: block;
+    position: relative;
     border: 2px dashed #aaa;
-    cursor: pointer;
     border-radius: 10px;
-    transition: .3s;
+    overflow: hidden;
+    cursor: pointer;
     background: #f9f9f9;
+    transition: border-color .2s ease, background .2s ease;
+}
+
+.form-group label.upload-box {
+    margin: 0;
+    max-width: inherit;
+    width: inherit;
+    height: inherit;
 }
 
 .upload-box:hover {
-    border-color: #1a628a;
+    border-color: #268615;
     background: #eef7fb;
 }
 
 .upload-box img {
-    max-width: 60px;
-    max-height: 60px;
-    object-fit: contain;
-    margin-bottom: 8px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
-.upload-box span {
+.upload-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #a3a3a3;
+    opacity: 0;
+    transition: opacity .2s ease;
+    pointer-events: none;
+}
+
+.upload-overlay i {
+    font-size: 32px;
+    margin-bottom: 6px;
+}
+
+.upload-overlay span {
+    font-size: 15px;
+}
+
+.upload-box:hover .upload-overlay,
+.upload-box:focus-within .upload-overlay {
+    opacity: 1;
+}
+
+.upload-box.new-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #aaa;
+    background: #f9f9f9;
+    color: #666;
+}
+
+.upload-box.new-upload img {
+    display: none;
+}
+
+.upload-box.new-upload .upload-placeholder {
+    text-align: center;
     font-size: 14px;
     color: #555;
 }
 
-.btn-action {
-    padding: 10px 0;
+.upload-box.new-upload .upload-placeholder i {
+    font-size: 32px;
+    margin-bottom: 6px;
 }
 
-.btn-action a {
+.btn-action {
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+}
+
+.btn-action a, .btn-action button {
     color: #ffffff;
-    padding: 8px 16px;
     border-radius: 4px;
     margin-right: 8px;
 }
 
-.btn-action a:nth-child(1) {
+.btn-action button {
     background: #1a8a1a;
+    cursor: pointer;
+    padding: 9px 20px;
 }
 
-.btn-action a:nth-child(2) {
+.btn-action a {
     background: gray;
+    padding: 8px 16px;
 }
 
-.btn-action a:nth-child(1):hover {
+.btn-action button:hover {
     background: #216721;
 }
 
-.btn-action a:nth-child(2):hover {
+.btn-action a:hover {
     background: #595959;
 }
 

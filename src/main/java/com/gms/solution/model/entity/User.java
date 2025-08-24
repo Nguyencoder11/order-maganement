@@ -42,6 +42,15 @@ public class User {
     @Column(name = "full_name")
     String fullName;
 
+    @Column(name = "gender")
+    String gender;
+
+    @Column(name = "date_of_birth")
+    LocalDateTime dateOfBirth;
+
+    @Column(name = "bio")
+    String bio;
+
     @Column(name = "image_path")
     String imagePath;
 
@@ -154,6 +163,30 @@ public class User {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public LocalDateTime getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDateTime dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 }
 

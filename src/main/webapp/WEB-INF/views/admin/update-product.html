@@ -1,47 +1,86 @@
 <div th:fragment="content" class="product-fragment">
-  <form th:action="@{/admin/products/update/{id}}" method="post" th:object="${product}" enctype="multipart/form-data">
+  <form th:action="@{/admin/products/update/{id}(id=${product.id})}"
+        th:object="${product}"
+        method="post"
+        enctype="multipart/form-data"
+        accept-charset="UTF-8">
     <h1>Cập nhật sản phẩm</h1>
     <div class="form-two-group">
       <div class="form-group">
-        <label>Tên sản phẩm</label>
-        <input type="text">
+        <label for="product-name">Tên sản phẩm</label>
+        <input id="product-name" type="text"
+               th:field="*{name}"
+               required>
       </div>
       <div class="form-group">
-        <label>Loại sản phẩm</label>
-        <select id="category-select"></select>
+        <label for="category-select">Loại sản phẩm</label>
+        <select id="category-select"
+                th:field="*{category.id}">
+          <option th:each="cat : ${categories}"
+                  th:value="${cat.id}"
+                  th:text="${cat.name}">
+          </option>
+        </select>
       </div>
       <div class="form-group">
-        <label>Giá</label>
-        <input type="text">
+        <label for="product-price">Giá</label>
+        <input id="product-price" type="text"
+               th:field="*{price}"
+               required>
       </div>
       <div class="form-group">
-        <label>Số lượng tồn kho</label>
-        <input type="number" min="0" value="0">
+        <label for="product-stock">Số lượng tồn kho</label>
+        <input id="product-stock" type="number" min="0"
+               th:field="*{stock}"
+               required>
       </div>
       <div class="form-group">
-        <label>Mô tả</label>
-        <textarea></textarea>
-      </div>
+        <label for="product-desc">Mô tả</label>
+        <textarea id="product-desc" th:field="*{description}"
+                  rows="5"
+                  required>
+        </textarea>
+       </div>
       <div class="form-group image-choice">
         <label>Ảnh sản phẩm</label>
         <div class="image-upload-wrapper">
-          <input type="file" id="imageInput" accept="image/*" onchange="previewImage(e)">
+          <input type="file"
+                 id="imageInput"
+                 name="file"
+                 accept="image/*"
+                 onchange="previewImage(this)">
           <label for="imageInput" class="upload-box">
             <img id="previewImg"
-                 src=""
-                 alt="Preview">
-            <span>Chọn ảnh</span>
+                 th:src="@{${product.imagePath}(v=${#dates.createNow().time})}"
+                 alt="">
+            <div class="upload-overlay" aria-hidden="true">
+              <i class="fa-regular fa-image"></i>
+              <span>Chọn ảnh</span>
+            </div>
           </label>
         </div>
       </div>
       <div class="form-group">
         <label>Id</label>
-        <input style="background: #e6e6e6" type="text" readonly>
+        <input style="background: #e6e6e6"
+               type="text"
+               th:field="*{id}"
+               readonly>
       </div>
     </div>
     <div class="btn-action">
-      <a th:href="@{#}">Lưu</a>
+      <button type="submit">Lưu</button>
       <a th:href="@{/admin/products}">Hủy</a>
     </div>
   </form>
+  <script>
+    function previewImage(input) {
+      const file = input.files && input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        document.getElementById("previewImg").src = e.target.result;
+      }
+      reader.readAsDataURL(file); }
+  </script>
 </div>

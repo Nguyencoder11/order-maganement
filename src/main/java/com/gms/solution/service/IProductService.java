@@ -8,6 +8,7 @@
 package com.gms.solution.service;
 
 import com.gms.solution.model.entity.Product;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,5 +20,7 @@ import java.util.List;
 public interface IProductService {
     List<Product> getAllProducts();
     Product getProductById(Long id);
-    Product updateProduct(Product product);
+    void createProduct(Product product, MultipartFile file);
+    void updateProduct(Long id, Product product, MultipartFile imagePath);
+    void deleteProduct(Long id);
 }

@@ -10,8 +10,10 @@ package com.gms.solution.model.entity;
 import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import org.springframework.format.annotation.NumberFormat;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 
 /**
@@ -38,6 +40,7 @@ public class Product {
     String description;
 
     @Column(name = "price", precision = 10, scale = 2)
+    @NumberFormat(pattern = "#,###.##")
     BigDecimal price;
 
     @Column(name = "image_path")

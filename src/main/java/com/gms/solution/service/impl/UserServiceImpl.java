@@ -95,4 +95,10 @@ public class UserServiceImpl implements IUserService {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
+    @Override
+    public User findByUserId(Long id) {
+        return userRepository.findById(id)
+                .orElse(null);
+    }
 }

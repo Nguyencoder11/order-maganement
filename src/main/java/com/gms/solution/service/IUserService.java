@@ -24,4 +24,6 @@ public interface IUserService {
     User findByUsername(String username);
     void changePassword(String username, String newPassword);
     List<User> getAllUsers();
+
+    User findByUserId(Long id);
 }

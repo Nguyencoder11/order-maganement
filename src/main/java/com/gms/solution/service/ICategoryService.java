@@ -19,4 +19,5 @@ import java.util.List;
 public interface ICategoryService {
     List<Category> getAllCategories();
     List<Category> getAllCategoryName();
+    Category findById(Long id);
 }

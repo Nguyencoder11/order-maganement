@@ -77,12 +77,35 @@ public class UserController {
     }
 
     // Xem thong tin tai khoan
-    @GetMapping("/users/profile")
-    public ModelAndView userProfile() {
+    @GetMapping("/users/profile/{id}")
+    public ModelAndView userProfile(@PathVariable Long id) {
         ModelAndView mav = new ModelAndView("index");
         mav.addObject("mainContent", "users/profile");
         mav.addObject("pageTitle", "Profile");
+
+        User userExisted = userService.findByUserId(id);
+        mav.addObject("user", userExisted);
         return mav;
+    }
+
+    // Hien thi form chinh sua tai khoan
+    @GetMapping("/users/profile/{id}/update")
+    public ModelAndView updateProfileView(@PathVariable Long id) {
+        ModelAndView mav = new ModelAndView("index");
+        mav.addObject("mainContent", "users/update-profile");
+        mav.addObject("pageTitle", "Profile");
+        mav.addObject("user", userService.findByUserId(id));
+        return mav;
+    }
+
+    // Xu ly cap nhat profile
+    @PostMapping("/users/profile/{id}/update")
+    public String updateProfile(@PathVariable Long id,
+                                @ModelAttribute("user") User user
+                                ) {
+
+
+        return "redirect:/users/profile/" + id;
     }
 
     // Quen mat khau
@@ -118,5 +141,7 @@ public class UserController {
         model.addAttribute("message", "Mật khẩu đã được thay đổi thành công. Bạn có thể đăng nhập ngay");
         return "redirect:/auth/login";
     }
+
+
 
 }

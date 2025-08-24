@@ -60,11 +60,11 @@
                     <td th:text="${product.description}"></td>
                     <td th:text="${#numbers.formatDecimal(product.price, 1, 'DEFAULT', 0, 'DEFAULT')} + ' ₫'"></td>
                     <td th:text="${product.stock}"></td>
-                    <td th:text="${#temporals.format(product.createdAt, 'dd/MM/yyyy')}"></td>
-                    <td th:text="${#temporals.format(product.updatedAt, 'dd/MM/yyyy')}"></td>
+                    <td th:text="${#temporals.format(product.createdAt, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                    <td th:text="${#temporals.format(product.updatedAt, 'dd-MM-yyyy HH:mm:ss')}"></td>
                     <td class="action">
                         <a th:href="@{/admin/products/update/{id}(id=${product.id})}">Sửa</a>
-                        <a th:href="'#'">Xóa</a>
+                        <a th:href="@{/admin/products/delete/{id}(id=${product.id})}">Xóa</a>
                     </td>
                 </tr>
             </tbody>
