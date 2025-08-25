@@ -1,17 +1,19 @@
 <div th:fragment="mainContent" class="user-profile user-update">
     <h2 class="profile-title">Sửa thông tin cơ bản</h2>
     <div class="profile-form">
-        <form th:action="@{/users/profile/{id}/update}"
+        <form th:action="@{/users/profile/{id}/update(id=${user.id})}"
               th:object="${user}"
               method="post"
-              enctype="multipart/form-data"
-              accept-charset="UTF-8">
+              enctype="multipart/form-data">
+<!--            <input type="hidden" th:field="*{id}" />-->
             <div class="user-update-wrapper">
                 <div class="image-choice-group">
-                    <div>
-                        <img alt="avatar"
-                             th:src="@{${user.imagePath}}">
-                    </div>
+                   <div style="display: flex; justify-content: center; align-items: center">
+                       <div class="profile-image">
+                           <img id="avatarPreview" alt="avatar"
+                                th:src="${user.imagePath}">
+                       </div>
+                   </div>
                     <div style="margin-top: 8px;" class="user-username">
                         @<span th:text="${user.username}">username</span>
                     </div>
@@ -24,61 +26,50 @@
                     <input type="file"
                            id="file"
                            name="file"
-                           style="display: none;">
+                           style="display: none;"
+                           accept="image/*"
+                           onchange="previewImage(event)">
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-
-                    <div class="form-group">
+                <div class="input-form-group">
+                    <div class="form-group form-group-1-2">
                         <label for="fullName">Họ tên</label>
-                        <input type="text" th:field="*{fullName}" id="fullName"
-                               placeholder="Nhập họ tên"
-                               style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px;">
+                        <input type="text" th:field="*{fullName}" id="fullName">
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group form-group-2-3">
                         <label for="email">Email</label>
-                        <input type="email" th:field="*{email}" id="email"
-                               placeholder="Nhập email"
-                               style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px;">
+                        <input type="email" th:field="*{email}" id="email">
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group form-group-1-2">
                         <label for="phone">Số điện thoại</label>
-                        <input type="text" th:field="*{phone}" id="phone"
-                               placeholder="Nhập số điện thoại"
-                               style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px;">
+                        <input type="text" th:field="*{phone}" id="phone">
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group form-group-2-3">
                         <label for="dateOfBirth">Ngày sinh</label>
-                        <input type="date" th:field="*{dateOfBirth}" id="dateOfBirth"
-                               style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px;">
+                        <input type="date" th:field="*{dateOfBirth}" id="dateOfBirth">
                     </div>
 
-                    <div class="form-group" style="grid-column: 1 / 3;">
+                    <div class="form-group form-group-1-2">
                         <label for="address">Địa chỉ</label>
-                        <input type="text" th:field="*{address}" id="address"
-                               placeholder="Nhập địa chỉ"
-                               style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px;">
+                        <input type="text" th:field="*{address}" id="address">
                     </div>
 
-                    <div class="form-group" style="grid-column: 1 / 3;">
+                    <div class="form-group form-group-2-3">
                         <label for="bio">Mô tả ngắn</label>
-                        <textarea th:field="*{bio}" id="bio"
-                                  placeholder="Mô tả ngắn"
-                                  style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; height: 80px; resize: none;"></textarea>
+                        <textarea th:field="*{bio}" id="bio" style="outline: none">
+                        </textarea>
                     </div>
 
                     <!-- Nút hành động -->
-                    <div style="grid-column: 1 / 3; display: flex; gap: 16px; margin-top: 10px;">
-                        <button type="submit"
-                                style="flex: 0 0 auto; padding: 10px 20px; background: #28a745; color: #fff; border: none; border-radius: 8px; cursor: pointer;">
+                    <div class="update-action-btn">
+                        <button class="btn-save-info" type="submit">
                             Lưu
                         </button>
-                        <button type="button"
-                                onclick="window.history.back();"
-                                style="flex: 0 0 auto; padding: 10px 20px; background: #888; color: #fff; border: none; border-radius: 8px; cursor: pointer;">
+                        <button class="btn-cancel" type="button"
+                                onclick="window.history.back();">
                             Hủy
                         </button>
                     </div>
@@ -86,4 +77,18 @@
             </div>
         </form>
     </div>
+    <script>
+        function previewImage(event) {
+            const input = event.target
+            const preview = document.getElementById("avatarPreview")
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader()
+                reader.onload = function (e) {
+                    preview.src = e.target.result
+                }
+                reader.readAsDataURL(input.files[0])
+            }
+        }
+    </script>
 </div>

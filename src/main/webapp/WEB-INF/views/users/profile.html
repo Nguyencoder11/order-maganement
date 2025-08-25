@@ -1,26 +1,28 @@
 <div th:fragment="mainContent" class="user-profile">
     <h2 class="profile-title">Thông tin cá nhân</h2>
     <div class="profile-form">
-        <form th:action="@{/users/profile/{id}}"
+        <form th:action="@{/users/profile/{id}(id=${user.id})}"
               th:object="${user}"
               method="post"
               enctype="multipart/form-data"
               accept-charset="UTF-8">
             <div class="user-info-wrapper">
                 <div class="image-choice-group">
-                    <div>
-                        <img alt="avatar"
-                             th:src="${user.imagePath}">
+                    <div style="display: flex; align-items: center; justify-content: center">
+                        <div class="profile-image">
+                            <img alt="avatar"
+                                 th:src="${user.imagePath}">
+                        </div>
                     </div>
                     <div class="user-name" th:text="${user.fullName}"></div>
                     <div class="user-username" th:text="'@' + ${user.username}"></div>
-                    <button type="button"
+                    <button class="btn-update-info" type="button"
                             th:onclick="'window.location.href=\'/order-management/users/profile/' + ${user.id} + '/update\''">
                         Sửa thông tin
                     </button>
                 </div>
 
-                <div class="input-form-group">
+                <div class="input-form-group profile-form-group">
                     <div class="form-group form-group-1-2">
                         <label for="email">Email</label>
                         <input type="email"

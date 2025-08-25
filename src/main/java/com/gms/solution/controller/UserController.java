@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -101,9 +102,11 @@ public class UserController {
     // Xu ly cap nhat profile
     @PostMapping("/users/profile/{id}/update")
     public String updateProfile(@PathVariable Long id,
-                                @ModelAttribute("user") User user
+                                @ModelAttribute("user") User user,
+                                @RequestParam(value = "file", required = false) MultipartFile file
                                 ) {
-
+        user.setId(id);
+        userService.updateUserInfo(id, user, file);
 
         return "redirect:/users/profile/" + id;
     }

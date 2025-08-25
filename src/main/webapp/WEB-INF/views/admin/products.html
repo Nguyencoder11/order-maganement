@@ -1,24 +1,27 @@
 <div th:fragment="content" class="product-fragment">
-    <form th:action="@{/admin/products/filter}" method="get" class="product-filter-group">
+    <form th:action="@{/admin/products/filter}"
+          method="get"
+          class="product-filter-group">
         <div class="form-group-filter">
             <h3 style="font-weight: 400;">Loại sản phẩm</h3>
             <select id="select-category" name="categoryId" class="select-category">
                 <option value="">-- Tất cả --</option>
                 <option th:each="category : ${categories}"
                         th:value="${category.id}"
-                        th:text="${category.name}"></option>
+                        th:text="${category.name}"
+                        th:selected="${category.id} == ${categoryId}"></option>
             </select>
         </div>
         <div class="form-group-filter">
             <h3 style="font-weight: 400;">Phân khúc giá</h3>
-            <select id="select-range-price" class="select-range-price">
-                <option>-- Tất cả --</option>
-                <option>Trên 50 triệu</option>
-                <option>40 - 50 triệu</option>
-                <option>30 - 40 triệu</option>
-                <option>20 - 30 triệu</option>
-                <option>10 - 20 triệu</option>
-                <option>Dưới 10 triệu</option>
+            <select name="priceRange" id="select-range-price" class="select-range-price">
+                <option th:selected="${priceRange == null or priceRange == ''}" value="">-- Tất cả --</option>
+                <option th:selected="${priceRange == '50000000-'}" value="50000000-">Trên 50 triệu</option>
+                <option th:selected="${priceRange == '40000000-50000000'}" value="40000000-50000000">40 - 50 triệu</option>
+                <option th:selected="${priceRange == '30000000-40000000'}" value="30000000-40000000">30 - 40 triệu</option>
+                <option th:selected="${priceRange == '20000000-30000000'}" value="20000000-30000000">20 - 30 triệu</option>
+                <option th:selected="${priceRange == '10000000-20000000'}" value="10000000-20000000">10 - 20 triệu</option>
+                <option th:selected="${priceRange == '-10000000'}" value="-10000000">Dưới 10 triệu</option>
             </select>
         </div>
         <button type="submit" class="filter-btn">Lọc</button>
@@ -64,11 +67,21 @@
                     <td th:text="${#temporals.format(product.updatedAt, 'dd-MM-yyyy HH:mm:ss')}"></td>
                     <td class="action">
                         <a th:href="@{/admin/products/update/{id}(id=${product.id})}">Sửa</a>
-                        <a th:href="@{/admin/products/delete/{id}(id=${product.id})}">Xóa</a>
+                        <button class="delete-btn"  th:data-id="${product.id}">Xóa</button>
                     </td>
                 </tr>
             </tbody>
         </table>
+        <!-- Popup xác nhận xóa -->
+        <div id="deleteOverlay" class="overlay" style="display: none;">
+            <div class="popup">
+                <h3>Bạn có chắc chắn muốn xóa sản phẩm này?</h3>
+                <div class="popup-actions">
+                    <button id="confirmDelete" class="btn-confirm">Đồng ý</button>
+                    <button id="cancelDelete" class="btn-cancel">Hủy</button>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="pagination">
         <a href="#">1</a>
@@ -78,4 +91,39 @@
         <a href="#">9</a>
         <a href="#">10</a>
     </div>
+    <script>
+        let deletedId = null
+
+        document.querySelectorAll(".delete-btn").forEach(btn => {
+            btn.addEventListener("click", function (e) {
+                e.preventDefault()
+                deletedId = this.getAttribute("data-id")
+                document.getElementById("deleteOverlay").style.display = "flex"
+            })
+        })
+
+        document.getElementById("cancelDelete").addEventListener('click', function () {
+            document.getElementById("deleteOverlay").style.display = "none"
+            deletedId = null
+        })
+
+        document.getElementById("confirmDelete").addEventListener('click', function () {
+            if (deletedId) {
+                fetch(`/admin/products/delete/${deletedId}`, {
+                    method: "POST"
+                })
+                    .then(response => {
+                        if (response.ok || response.status === 302) {
+                            window.location.href = "/admin/products";
+                        } else {
+                            alert("Xóa thật bại!")
+                        }
+                    })
+                    .catch(err => {
+                        alert("Xóa thất bại!");
+                        console.error(err);
+                    });
+            }
+        })
+    </script>
 </div>

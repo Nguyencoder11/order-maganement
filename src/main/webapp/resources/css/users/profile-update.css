@@ -1,8 +1,8 @@
 .user-update-wrapper {
-    padding: 0 32px;
+    padding: 0 200px;
     display: grid;
     align-items: flex-start;
-    grid-template-columns: 250px 1fr;
+    grid-template-columns: 300px 1fr;
     gap: 40px;
 }
 
@@ -14,4 +14,43 @@
     color: #fff;
     border-radius: 8px;
     cursor: pointer;
+}
+
+.btn-save-info {
+    flex: 0 0 auto;
+    padding: 10px 20px;
+    background: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-save-info:hover {
+    background: #156e15;
+}
+
+.btn-cancel {
+    flex: 0 0 auto;
+    padding: 10px 20px;
+    background: #888;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-cancel:hover {
+    background: #595858;
+}
+
+.update-action-btn {
+    grid-column: 1 / 3;
+    display: flex;
+    gap: 16px;
+    margin-top: 10px;
+}
+
+.user-upload-image-label:hover {
+    background: #b13b2f;
 }

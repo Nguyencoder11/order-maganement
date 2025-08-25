@@ -193,4 +193,44 @@ public class AdminController {
         return "redirect:/admin/products";
     }
 
+
+    // Xu ly xoa san pham
+    @PostMapping("/products/delete/{id}")
+    public String deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+
+        return "redirect:/admin/products";
+    }
+
+    // Xy ly loc san pham
+    @GetMapping("/products/filter")
+    public ModelAndView filterProduct(@RequestParam(required = false) Long categoryId,
+                                      @RequestParam(required = false) String priceRange) {
+        List<Product> products = productService.filterProducts(categoryId, priceRange);
+        List<Category> categories = categoryService.getAllCategoryName();
+        ModelAndView mav = new ModelAndView("admin/admin-dashboard");
+        mav.addObject("content", "admin/products");
+        mav.addObject("products", products);
+        mav.addObject("categories", categories);
+        mav.addObject("categoryId", categoryId);
+        mav.addObject("priceRange", priceRange);
+        return mav;
+    }
+
+
+
+
+    /* =================================== QUAN LY NGUOI DUNG ===================================== */
+
+
+
+
+    /* =================================== CHAT ===================================== */
+
+
+
+
+
+
+
 }

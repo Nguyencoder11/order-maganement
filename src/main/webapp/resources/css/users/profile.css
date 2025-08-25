@@ -1,5 +1,6 @@
 .user-profile {
     padding: 20px 0;
+    background: #ececec;
 }
 
 .profile-title {
@@ -12,7 +13,7 @@
 }
 
 .user-info-wrapper {
-    padding: 0 64px;
+    padding: 0 200px;
     display: grid;
     align-items: flex-start;
     grid-template-columns: 300px 1fr;
@@ -23,11 +24,17 @@
     text-align: center;
 }
 
-.image-choice-group div:nth-child(1) img {
+.image-choice-group .profile-image {
     width: 150px;
     height: 150px;
     border-radius: 50%;
     border: 3px solid green;
+}
+
+.image-choice-group .profile-image img {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
 }
 
 .user-name {
@@ -80,4 +87,21 @@
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 6px;
+}
+
+.btn-update-info:hover {
+    background: #1a8a1a;
+}
+
+.profile-form-group {
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.input-form-group.profile-form-group input,
+.input-form-group.profile-form-group textarea {
+    border: none;
+    padding-left: unset;
 }

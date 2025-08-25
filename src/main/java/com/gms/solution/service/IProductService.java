@@ -23,4 +23,6 @@ public interface IProductService {
     void createProduct(Product product, MultipartFile file);
     void updateProduct(Long id, Product product, MultipartFile imagePath);
     void deleteProduct(Long id);
+
+    List<Product> filterProducts(Long categoryId, String priceRange);
 }

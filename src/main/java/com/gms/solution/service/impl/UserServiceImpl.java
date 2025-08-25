@@ -16,7 +16,14 @@ import com.gms.solution.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -100,5 +107,49 @@ public class UserServiceImpl implements IUserService {
     public User findByUserId(Long id) {
         return userRepository.findById(id)
                 .orElse(null);
+    }
+
+    @Override
+    public void updateUserInfo(Long id, User user, MultipartFile file) {
+        User userExisted = userRepository.findById(id).orElse(null);
+        if (userExisted != null) {
+            userExisted.setFullName(user.getFullName());
+            userExisted.setEmail(user.getEmail());
+            userExisted.setPhone(user.getPhone());
+            userExisted.setDateOfBirth(user.getDateOfBirth());
+            userExisted.setAddress(user.getAddress());
+            userExisted.setBio(user.getBio());
+
+            try {
+                if (file != null && !file.isEmpty()) {
+                    String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+                    String uploadDir = "uploads/users/";
+                    Path uploadPath = Paths.get(uploadDir);
+
+                    if (!Files.exists(uploadPath)) {
+                        Files.createDirectories(uploadPath);
+                    }
+
+                    Path filePath = uploadPath.resolve(fileName);
+                    Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+                    userExisted.setImagePath("/" + uploadDir + fileName);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Log debug
+        System.out.println("===== Updating User =====");
+        System.out.println("ID: " + id);
+        System.out.println("Full Name: " + userExisted.getFullName());
+        System.out.println("Email: " + userExisted.getEmail());
+        System.out.println("Phone: " + userExisted.getPhone());
+        System.out.println("Date of birth: " + userExisted.getDateOfBirth());
+        System.out.println("Address: " + userExisted.getAddress());
+        System.out.println("Bio: " + userExisted.getBio());
+
+        userRepository.save(userExisted);
     }
 }

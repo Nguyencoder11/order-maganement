@@ -10,7 +10,9 @@ package com.gms.solution.model.entity;
 import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -46,7 +48,8 @@ public class User {
     String gender;
 
     @Column(name = "date_of_birth")
-    LocalDateTime dateOfBirth;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    LocalDate dateOfBirth;
 
     @Column(name = "bio")
     String bio;
@@ -181,11 +184,11 @@ public class User {
         this.bio = bio;
     }
 
-    public LocalDateTime getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDateTime dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 }

@@ -19,6 +19,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -143,10 +144,24 @@ public class ProductServiceImpl implements IProductService {
         productRepository.save(existingProduct);
     }
 
-
     @Override
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Product> filterProducts(Long categoryId, String priceRange) {
+        BigDecimal min_price = null;
+        BigDecimal max_price = null;
+
+        if (priceRange != null
+                && !priceRange.isEmpty()) {
+            String[] parts = priceRange.split("-");
+            if (!parts[0].isEmpty()) min_price = new BigDecimal(parts[0]);
+            if (parts.length > 1 && !parts[1].isEmpty()) max_price = new BigDecimal(parts[1]);
+        }
+
+        return productRepository.filterProducts(categoryId, min_price, max_price);
     }
 
 }
