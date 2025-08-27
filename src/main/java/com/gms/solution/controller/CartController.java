@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * CartController.java
@@ -35,6 +36,7 @@ public class CartController {
     private ICartService cartService;
 
     // Hien thi noi dung mainContent cho phan gio hang voi duong dan /cart
+    // Xem gio hang
     @GetMapping
     public ModelAndView cart(HttpSession session) {
         User loggedInUser = (User)  session.getAttribute("loggedInUser");
@@ -59,6 +61,7 @@ public class CartController {
         return mav;
     }
 
+    // Them san pham vao gio hang
     @PostMapping("/add/{productId}")
     public String addToCart(@PathVariable Long productId,
                             HttpSession session) {
@@ -71,5 +74,38 @@ public class CartController {
         cartService.addToCart(loggedInUser, product);
 
         return "redirect:/home";
+    }
+
+    // Thay doi so luong san pham
+    @PostMapping("/update/{productId}")
+    @ResponseBody
+    public BigDecimal updateCartItem(@PathVariable Long productId,
+                                     @RequestBody Map<String, Integer> body,
+                                     HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            throw new RuntimeException("User not logged in");
+        }
+        int quantity = body.get("quantity");
+        Product product = productService.findById(productId);
+        cartService.updateQuantity(loggedInUser, product, quantity);
+
+        List<CartItems> cartItems = cartService.getCartItems(loggedInUser);
+        return cartItems.stream()
+                .map(item -> item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    // Xoa san pham trong gio hang
+    @PostMapping("/delete/{productId}")
+    public String deleteCartItem(@PathVariable Long productId,
+                                 HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/auth/login";
+        }
+
+        cartService.deleteCartItem(loggedInUser, productId);
+        return "redirect:/cart";
     }
 }

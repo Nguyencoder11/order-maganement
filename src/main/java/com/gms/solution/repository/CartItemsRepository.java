@@ -10,6 +10,7 @@ package com.gms.solution.repository;
 import com.gms.solution.model.entity.Cart;
 import com.gms.solution.model.entity.CartItems;
 import com.gms.solution.model.entity.Product;
+import com.gms.solution.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -25,4 +26,6 @@ import java.util.Optional;
 public interface CartItemsRepository extends JpaRepository<CartItems, Integer> {
     Optional<CartItems> findByCartAndProduct(Cart cart, Product product);
     List<CartItems> findByCart(Cart cart);
+
+    CartItems findByCart_UserAndProductId(User user, Long productId);
 }

@@ -13,14 +13,20 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="item, iterStat : ${cartItems}">
+                <tr th:each="item, iterStat : ${cartItems}" th:data-id="${item.product.id}">
                     <td th:text="${iterStat.index + 1}"></td>
                     <td th:text="${item.product.name}"></td>
-                    <td th:text="${#numbers.formatDecimal(item.price, 1, 'DEFAULT', 0, 'DEFAULT')} + ' ₫'">
+                    <td class="item-price"
+                        th:data-price="${item.price}"
+                        th:text="${#numbers.formatDecimal(item.price, 1, 'DEFAULT', 0, 'DEFAULT')} + ' ₫'">
                     <td>
-                        <input th:value="${item.quantity}" type="number" min="0" style="border: 1px solid #cccccc; padding: 8px; border-radius: 4px">
+                        <input class="cart-qty"
+                               th:value="${item.quantity}"
+                               type="number" min="0"
+                               style="border: 1px solid #cccccc; padding: 8px; border-radius: 4px">
                     </td>
-                    <td th:text="${#numbers.formatDecimal(item.price * item.quantity, 1, 'DEFAULT', 0, 'DEFAULT')} + ' ₫'"></td>
+                    <td class="item-total"
+                        th:text="${#numbers.formatDecimal(item.price * item.quantity, 1, 'DEFAULT', 0, 'DEFAULT')} + ' ₫'"></td>
                     <td>
                         <button class="cart-delete-btn">Xóa</button>
                     </td>
@@ -29,8 +35,66 @@
         </table>
     </div>
     <div class="cart-total">
-        <p>Tổng tiền giỏ hàng: <span th:text="${#numbers.formatDecimal(cartTotal, 1, 'DEFAULT', 0, 'DEFAULT')} + ' đ'"></span></p>
+        <div>
+           <p>
+               Tổng tiền giỏ hàng:
+               <span th:text="${#numbers.formatDecimal(cartTotal, 1, 'DEFAULT', 0, 'DEFAULT')} + ' đ'"></span>
+           </p>
+           <button type="button">Mua hàng</button>
+        </div>
         <div></div>
-        <button type="button">Thanh toán</button>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const qtyInputs = document.querySelectorAll(".cart-qty")
+
+            qtyInputs.forEach(input => {
+                input.addEventListener('input', async (e) => {
+                    const quantity = parseInt(e.target.value || 0)
+                    const row = e.target.closest("tr")
+
+                    const price = parseFloat(row.querySelector(".item-price").dataset.price)
+
+                    const subtotal = price * quantity;
+                    row.querySelector(".item-total").textContent = subtotal.toLocaleString() + " ₫"
+
+                    updateCartTotal();
+
+                    const productId = row.dataset.id
+                    await fetch(`/cart/update/${productId}`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({quantity})
+                    })
+                })
+            })
+
+            document.querySelectorAll('.cart-delete-btn').forEach(btn => {
+                btn.addEventListener("click", async e => {
+                    const row = e.target.closest('tr')
+                    const productName = row.querySelector('td:nth-child(2)').textContent
+                    const productId = row.dataset.id
+
+                    const deleteConfirm = confirm(`Bạn có chắc chắn muốn xóa sản phẩm "${productName}" khỏi giỏ hàng?`)
+                    if (!deleteConfirm) return
+
+                    await fetch(`/cart/delete/${productId}`, {
+                        method: 'POST'
+                    })
+
+                    row.remove()
+                    updateCartTotal();
+                })
+            })
+
+            function updateCartTotal() {
+                let total = 0;
+                document.querySelectorAll('.item-total').forEach(cell => {
+                    total += parseFloat(cell.textContent.replace(/[^\d]/g, "")) || 0
+                })
+                document.querySelector('.cart-total span').textContent = total.toLocaleString() + ' đ'
+            }
+        })
+    </script>
 </div>

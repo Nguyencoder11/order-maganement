@@ -26,4 +26,7 @@ public interface ICartService {
 
     List<CartItems> getCartItems(User user);
     Cart getCartByUser(User user);
+
+    void updateQuantity(User user, Product product, int quantity);
+    void deleteCartItem(User user, Long productId);
 }

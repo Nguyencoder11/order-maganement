@@ -8,6 +8,8 @@
 package com.gms.solution.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * OrderController.java
@@ -15,5 +17,8 @@ import org.springframework.stereotype.Controller;
  * @author Nguyen
  */
 @Controller
+@RequestMapping("/orders")
 public class OrderController {
+//    @PostMapping("/export")
+
 }

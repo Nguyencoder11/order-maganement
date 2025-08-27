@@ -87,4 +87,25 @@ public class CartServiceImpl implements ICartService {
     public Cart getCartByUser(User user) {
         return getOrCreateCart(user);
     }
+
+    @Override
+    public void updateQuantity(User user, Product product, int quantity) {
+        CartItems item = cartItemsRepository.findByCart_UserAndProductId(user, product.getId());
+        if (item != null) {
+            item.setQuantity(quantity);
+            cartItemsRepository.save(item);
+        }
+    }
+
+    @Override
+    public void deleteCartItem(User user, Long productId) {
+        CartItems item = cartItemsRepository.findByCart_UserAndProductId(user, productId);
+        if (item != null) {
+            cartItemsRepository.delete(item);
+
+            Cart cart = item.getCart();
+            cart.setUpdatedAt(LocalDateTime.now());
+            cartRepository.save(cart);
+        }
+    }
 }
