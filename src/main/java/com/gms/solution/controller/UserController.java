@@ -81,8 +81,8 @@ public class UserController {
     @GetMapping("/users/profile/{id}")
     public ModelAndView userProfile(@PathVariable Long id) {
         ModelAndView mav = new ModelAndView("index");
-        mav.addObject("mainContent", "users/profile");
         mav.addObject("pageTitle", "Profile");
+        mav.addObject("mainContent", "users/profile");
 
         User userExisted = userService.findByUserId(id);
         mav.addObject("user", userExisted);
@@ -93,8 +93,8 @@ public class UserController {
     @GetMapping("/users/profile/{id}/update")
     public ModelAndView updateProfileView(@PathVariable Long id) {
         ModelAndView mav = new ModelAndView("index");
-        mav.addObject("mainContent", "users/update-profile");
         mav.addObject("pageTitle", "Profile");
+        mav.addObject("mainContent", "users/update-profile");
         mav.addObject("user", userService.findByUserId(id));
         return mav;
     }

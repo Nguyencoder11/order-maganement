@@ -1,0 +1,103 @@
+.chat-area {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 14px;
+    border-radius: 50%;
+    background: green;
+    color: #fff;
+    cursor: pointer;
+    z-index: 9999;
+}
+
+.chat-area i {
+    font-size: 20px;
+}
+
+.chat-popup {
+    position: fixed;
+    bottom: 80px; /* nằm trên nút chat */
+    right: 20px;
+    width: 300px;
+    height: 400px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    display: none; /* Ẩn mặc định */
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 10000;
+}
+
+.chat-header {
+    background: #199a19;
+    color: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+.chat-header button {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.chat-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    font-size: 14px;
+    color: #333;
+}
+
+#chatInput {
+    border: none;
+    border-top: 1px solid #ddd;
+    padding: 10px;
+    font-size: 14px;
+    width: 100%;
+}
+
+#closeChat {
+    padding: 8px;
+}
+
+#closeChat:hover {
+    background: #b0b0b0;
+    border-radius: 10px;
+}
+
+.chat-input-area {
+    display: flex;
+    border-top: 1px solid #ddd;
+}
+
+#chatInput {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    font-size: 14px;
+}
+
+#sendBtn {
+    background: #199a19;
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    cursor: pointer;
+}
+
+#sendBtn:hover {
+    background: #20A920;
+}

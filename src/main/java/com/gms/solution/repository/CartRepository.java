@@ -8,8 +8,11 @@
 package com.gms.solution.repository;
 
 import com.gms.solution.model.entity.Cart;
+import com.gms.solution.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 /**
  * CartRepository.java
@@ -18,4 +21,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long> {
+    Optional<Cart> findByUser(User user);
 }

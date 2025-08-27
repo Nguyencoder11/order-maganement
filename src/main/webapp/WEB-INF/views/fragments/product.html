@@ -22,10 +22,12 @@
                             <i class="icon-star fa-solid fa-star"></i>
                         </span>
                     </div>
-                    <button type="submit">
-                        <i class="fa-solid fa-cart-shopping"></i>
-                        Thêm vào giỏ hàng
-                    </button>
+                    <form method="post" th:action="@{/cart/add/{id}(id=${product.id})}">
+                        <button type="submit">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            Thêm vào giỏ hàng
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

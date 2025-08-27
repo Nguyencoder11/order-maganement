@@ -1,0 +1,41 @@
+
+.chat-title {
+    margin: 0.6325rem 0;
+}
+
+.chat-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px;
+    align-items: center;
+    padding: 10px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.chat-item:hover {
+    background: #ceffb8;
+}
+
+.chat-avatar {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+}
+
+.chat-avatar img {
+    width: inherit;
+    height: inherit;
+    border-radius: inherit;
+}
+
+.chat-info strong {
+    font-size: 20px;
+}
+
+.chat-info p {
+    margin-top: 8px;
+    font-size: 18px;
+}

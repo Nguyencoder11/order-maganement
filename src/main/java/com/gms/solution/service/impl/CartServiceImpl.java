@@ -7,8 +7,18 @@
 
 package com.gms.solution.service.impl;
 
+import com.gms.solution.model.entity.Cart;
+import com.gms.solution.model.entity.CartItems;
+import com.gms.solution.model.entity.Product;
+import com.gms.solution.model.entity.User;
+import com.gms.solution.repository.CartItemsRepository;
+import com.gms.solution.repository.CartRepository;
 import com.gms.solution.service.ICartService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * CartServiceImpl.java
@@ -17,4 +27,64 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CartServiceImpl implements ICartService {
+    @Autowired
+    private CartRepository cartRepository;
+    @Autowired
+    private CartItemsRepository cartItemsRepository;
+
+
+    @Override
+    public Cart getOrCreateCart(User user) {
+        return cartRepository.findByUser(user)
+                .orElseGet(() -> {
+                    Cart cart = new Cart();
+                    cart.setUser(user);
+                    cart.setCreatedAt(LocalDateTime.now());
+                    cart.setUpdatedAt(LocalDateTime.now());
+                    return cartRepository.save(cart);
+                });
+    }
+
+    @Override
+    public void addToCart(User user, Product product) {
+        Cart cart = getOrCreateCart(user);
+
+        CartItems cartItem = cartItemsRepository.findByCartAndProduct(cart, product)
+                .orElseGet(() -> {
+                    CartItems ci = new CartItems();
+                    ci.setCart(cart);
+                    ci.setProduct(product);
+                    ci.setQuantity(0);
+                    ci.setPrice(product.getPrice());
+                    ci.setCreatedAt(LocalDateTime.now());
+                    return ci;
+                });
+        cartItem.setQuantity(cartItem.getQuantity() + 1);
+        cartItem.setUpdatedAt(LocalDateTime.now());
+        cartItemsRepository.save(cartItem);
+
+        cart.setUpdatedAt(LocalDateTime.now());
+        cartRepository.save(cart);
+    }
+
+    @Override
+    public int getTotalQuantity(User user) {
+        return cartRepository.findByUser(user)
+                .map(cart -> cartItemsRepository.findByCart(cart)
+                        .stream()
+                        .mapToInt(CartItems::getQuantity)
+                        .sum())
+                .orElse(0);
+    }
+
+    @Override
+    public List<CartItems> getCartItems(User user) {
+        Cart cart = getOrCreateCart(user);
+        return cartItemsRepository.findByCart(cart);
+    }
+
+    @Override
+    public Cart getCartByUser(User user) {
+        return getOrCreateCart(user);
+    }
 }

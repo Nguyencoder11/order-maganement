@@ -7,6 +7,8 @@
 
 package com.gms.solution.service.impl;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.gms.solution.enums.RoleName;
 import com.gms.solution.model.entity.Role;
 import com.gms.solution.model.entity.User;
@@ -14,6 +16,7 @@ import com.gms.solution.repository.RoleRepository;
 import com.gms.solution.repository.UserRepository;
 import com.gms.solution.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -26,6 +29,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * UserServiceImpl.java
@@ -40,6 +44,12 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private Cloudinary cloudinary;
 
     // Dang ky tai khoan
     @Override
@@ -56,6 +66,7 @@ public class UserServiceImpl implements IUserService {
                     newRole.setRoleName(RoleName.ROLE_USER);
                     return roleRepository.save(newRole);
                 });
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(userRole);
         user.setEnabled(true);
         user.setCreatedAt(LocalDateTime.now());
@@ -78,7 +89,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User login(String username, String password) {
         User user = userRepository.findByUsername(username);
-        if (user != null && user.getPassword().equals(password)) {
+        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
             return user;
         }
         return null;
@@ -93,7 +104,7 @@ public class UserServiceImpl implements IUserService {
     public void changePassword(String username, String newPassword) {
         User user = userRepository.findByUsername(username);
         if (user != null) {
-            user.setPassword(newPassword);
+            user.setPassword(passwordEncoder.encode(newPassword));
             userRepository.save(user);
         }
     }
@@ -122,18 +133,11 @@ public class UserServiceImpl implements IUserService {
 
             try {
                 if (file != null && !file.isEmpty()) {
-                    String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-                    String uploadDir = "uploads/users/";
-                    Path uploadPath = Paths.get(uploadDir);
+                    Map uploadResult = cloudinary.uploader().upload(file.getBytes(),
+                            ObjectUtils.asMap("folder", "users"));
 
-                    if (!Files.exists(uploadPath)) {
-                        Files.createDirectories(uploadPath);
-                    }
-
-                    Path filePath = uploadPath.resolve(fileName);
-                    Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-                    userExisted.setImagePath("/" + uploadDir + fileName);
+                    String url = (String) uploadResult.get("secure_url");
+                    userExisted.setImagePath(url);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -151,5 +155,15 @@ public class UserServiceImpl implements IUserService {
         System.out.println("Bio: " + userExisted.getBio());
 
         userRepository.save(userExisted);
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    public void saveUser(User user) {
+        userRepository.save(user);
     }
 }

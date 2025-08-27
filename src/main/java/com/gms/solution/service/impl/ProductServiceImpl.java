@@ -7,6 +7,8 @@
 
 package com.gms.solution.service.impl;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.gms.solution.model.entity.Category;
 import com.gms.solution.model.entity.Product;
 import com.gms.solution.repository.CategoryRepository;
@@ -26,6 +28,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * ProductServiceImpl.java
@@ -38,6 +41,9 @@ public class ProductServiceImpl implements IProductService {
     private ProductRepository productRepository;
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private Cloudinary cloudinary;
 
     @Override
     public List<Product> getAllProducts() {
@@ -61,18 +67,11 @@ public class ProductServiceImpl implements IProductService {
 
         try {
             if (file != null && !file.isEmpty()) {
-                String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-                String uploadDir = "uploads/products/";
-                Path uploadPath = Paths.get(uploadDir);
+                Map uploadResult = cloudinary.uploader().upload(file.getBytes(),
+                        ObjectUtils.asMap("folder", "products"));
 
-                if (!Files.exists(uploadPath)) {
-                    Files.createDirectories(uploadPath);
-                }
-
-                Path filePath = uploadPath.resolve(fileName);
-                Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-                product.setImagePath("/" + uploadDir + fileName);
+                String url = (String) uploadResult.get("secure_url");
+                product.setImagePath(url);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -114,18 +113,11 @@ public class ProductServiceImpl implements IProductService {
 
         try {
             if (file != null && !file.isEmpty()) {
-                String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-                String uploadDir = "uploads/products/";
-                Path uploadPath = Paths.get(uploadDir);
+                Map uploadResult = cloudinary.uploader().upload(file.getBytes(),
+                        ObjectUtils.asMap("folder", "products"));
 
-                if (!Files.exists(uploadPath)) {
-                    Files.createDirectories(uploadPath);
-                }
-
-                Path filePath = uploadPath.resolve(fileName);
-                Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-                existingProduct.setImagePath("/" + uploadDir + fileName);
+                String url = (String) uploadResult.get("secure_url");
+                existingProduct.setImagePath(url);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -162,6 +154,11 @@ public class ProductServiceImpl implements IProductService {
         }
 
         return productRepository.filterProducts(categoryId, min_price, max_price);
+    }
+
+    @Override
+    public Product findById(Long productId) {
+        return productRepository.findById(productId).orElse(null);
     }
 
 }

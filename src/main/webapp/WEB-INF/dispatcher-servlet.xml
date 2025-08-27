@@ -16,6 +16,7 @@
 
     <!-- Cau hinh cho phep truy cap cac file trong thu muc resources o webapp -->
     <mvc:resources mapping="/resources/**" location="/resources/">
+        <!-- luon load lai tai nguyen -->
         <mvc:cache-control no-cache="true" no-store="true" must-revalidate="true"/>
         <mvc:resource-chain resource-cache="false">
             <mvc:resolvers>
@@ -30,7 +31,6 @@
 
     <!-- Quet package controller de dang ky cac bean -->
     <context:component-scan base-package="com.gms.solution.controller" />
-    <context:component-scan base-package="com.gms.solution.config" />
 
     <!-- Cau hinh Thymeleaf xu ly view .html dat tai WEB-INF su dung ma hoa UTF-8 -->
     <bean id="templateResolver" class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
@@ -50,6 +50,7 @@
         <property name="characterEncoding" value="UTF-8"/>
     </bean>
 
+    <!-- Config ho tro xu ly MultipartFile -->
     <bean id="multipartResolver"
           class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="maxUploadSize" value="20971520"/>

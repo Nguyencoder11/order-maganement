@@ -10,49 +10,61 @@
     <div class="table-show">
         <table class="table-data user-table">
             <thead>
-            <tr>
-                <th>STT</th>
-                <th>Họ tên</th>
-                <th>Email</th>
-                <th>Tên đăng nhập</th>
-                <th>Mật khẩu</th>
-                <th>Số điện thoại</th>
-                <th>Địa chỉ</th>
-                <th>Trạng thái</th>
-                <th>Ngày tạo</th>
-                <th>Ngày cập nhật</th>
-                <th>Hành động</th>
-            </tr>
+                <tr>
+                    <th>STT</th>
+                    <th>Họ tên</th>
+                    <th>Email</th>
+                    <th>Tên đăng nhập</th>
+<!--                    <th>Mật khẩu</th>-->
+                    <th>Số điện thoại</th>
+                    <th>Địa chỉ</th>
+                    <th>Trạng thái</th>
+                    <th>Ngày tạo</th>
+                    <th>Ngày cập nhật</th>
+                    <th>Hành động</th>
+                </tr>
             </thead>
             <tbody>
-            <tr th:each="user, iterStat : ${users}">
-                <td th:text="${iterStat.count}"></td>
-                <td th:text="${user.fullName}"></td>
-                <td th:text="${user.email}"></td>
-                <td th:text="${user.username}"></td>
-                <td th:text="${user.password}"></td>
-                <td th:text="${user.phone}"></td>
-                <td th:text="${user.address}"></td>
-                <td>
-                    <span th:if="${user.enabled}" style="color: green;">✔ Active</span>
-                    <span th:if="${!user.enabled}" style="color: red;">✖ Locked</span>
-                </td>
-                <td th:text="${#temporals.format(user.createdAt, 'dd-MM-yyyy HH:mm:ss')}"></td>
-                <td th:text="${#temporals.format(user.updatedAt, 'dd-MM-yyyy HH:mm:ss')}"></td>
-                <td class="action">
-                    <a th:href="@{#}">Sửa</a>
-                    <a th:href="@{#}">Xóa</a>
-                    <label class="switch">
-                        <input type="checkbox"
-                                th:checked="${user.enabled}"
-                                th:attr="data-id=${user.id}"
-                                onchange="toggleStatus(this)">
-                        <span class="slider round"></span>
-                    </label>
-                </td>
-            </tr>
+                <tr th:each="user, iterStat : ${users}">
+                    <td th:text="${iterStat.count}"></td>
+                    <td th:text="${user.fullName}"></td>
+                    <td th:text="${user.email}"></td>
+                    <td th:text="${user.username}"></td>
+<!--                    <td th:text="${user.password}"></td>-->
+                    <td th:text="${user.phone}"></td>
+                    <td th:text="${user.address}"></td>
+                    <td>
+                        <span id="status-text-[[${user.id}]]"
+                              th:text="${user.enabled} ? '✔ Active' : '✖ Locked'"></span>
+<!--                        <span th:if="${user.enabled}" style="color: green;">✔ Active</span>-->
+<!--                        <span th:if="${!user.enabled}" style="color: red;">✖ Locked</span>-->
+                    </td>
+                    <td th:text="${#temporals.format(user.createdAt, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                    <td th:text="${#temporals.format(user.updatedAt, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                    <td class="action">
+<!--                        <a th:href="@{#}">Sửa</a>-->
+                        <button class="delete-btn" th:data-id="${user.id}">Xóa</button>
+                        <label class="switch">
+                            <input type="checkbox"
+                                    th:checked="${user.enabled}"
+                                    th:attr="data-id=${user.id}"
+                                    onchange="toggleStatus(this)">
+                            <span class="slider round"></span>
+                        </label>
+                    </td>
+                </tr>
             </tbody>
         </table>
+        <!-- Popup xác nhận xóa -->
+        <div id="deleteOverlay" class="overlay" style="display: none;">
+            <div class="popup">
+                <h3>Bạn có chắc chắn muốn xóa người dùng này?</h3>
+                <div class="popup-actions">
+                    <button id="confirmDelete" class="btn-confirm">Đồng ý</button>
+                    <button id="cancelDelete" class="btn-cancel">Hủy</button>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="pagination">
         <a href="#">1</a>
@@ -62,4 +74,68 @@
         <a href="#">9</a>
         <a href="#">10</a>
     </div>
+
+    <script>
+        let deletedId = null
+
+        document.querySelectorAll(".delete-btn").forEach(btn => {
+            btn.addEventListener("click", function (e) {
+                e.preventDefault()
+                deletedId = this.getAttribute("data-id")
+                document.getElementById("deleteOverlay").style.display = "flex"
+            })
+        })
+
+        document.getElementById("cancelDelete").addEventListener('click', function () {
+            document.getElementById("deleteOverlay").style.display = "none"
+            deletedId = null
+        })
+
+        document.getElementById("confirmDelete").addEventListener('click', function () {
+            if (deletedId) {
+                fetch(`/admin/users/delete/${deletedId}`, {
+                    method: "POST"
+                })
+                    .then(response => {
+                        if (response.ok || response.status === 302) {
+                            alert("Xóa thành công!")
+                            window.location.href = "/admin/users";
+                        } else {
+                            alert("Xóa thất bại!")
+                        }
+                    })
+                    .catch(err => {
+                        alert("Xóa thất bại!");
+                        console.error(err);
+                    });
+            }
+        })
+
+        function toggleStatus(checkbox) {
+            const userId = checkbox.getAttribute("data-id")
+
+            fetch(`/admin/users/toggle-status/${userId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        const statusSpan = document.getElementById("status-text-" + userId)
+                        statusSpan.textContent = data.enabled ? "✔ Active" : "✖ Locked"
+                    } else {
+                        alert("Cập nhật trạng thái thất bại!")
+                        checkbox.checked = !checkbox.checked
+                    }
+                })
+                .catch(err => {
+                    alert("Có lỗi xảy ra khi cập nhật trạng thái!")
+                    console.log(err)
+                    checkbox.checked = !checkbox.checked
+                })
+        }
+    </script>
 </div>

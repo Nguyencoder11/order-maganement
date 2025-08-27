@@ -7,10 +7,17 @@
 
 package com.gms.solution.service;
 
+import com.gms.solution.model.entity.Message;
+import com.gms.solution.model.entity.User;
+
+import java.util.List;
+
 /**
  * IChatService.java
  *
  * @author Nguyen
  */
 public interface IChatService {
+    Message saveMessage(Message message);
+    List<Message> getMessages(User sender, User receiver);
 }

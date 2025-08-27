@@ -29,4 +29,8 @@ public interface IUserService {
     User findByUserId(Long id);
 
     void updateUserInfo(Long id, User user, MultipartFile file);
+
+    void deleteUser(Long id);
+
+    void saveUser(User user);
 }

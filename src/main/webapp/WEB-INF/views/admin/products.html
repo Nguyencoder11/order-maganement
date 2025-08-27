@@ -67,7 +67,7 @@
                     <td th:text="${#temporals.format(product.updatedAt, 'dd-MM-yyyy HH:mm:ss')}"></td>
                     <td class="action">
                         <a th:href="@{/admin/products/update/{id}(id=${product.id})}">Sửa</a>
-                        <button class="delete-btn"  th:data-id="${product.id}">Xóa</button>
+                        <button class="delete-btn" th:data-id="${product.id}">Xóa</button>
                     </td>
                 </tr>
             </tbody>
@@ -114,9 +114,10 @@
                 })
                     .then(response => {
                         if (response.ok || response.status === 302) {
+                            alert("Xóa thành công!")
                             window.location.href = "/admin/products";
                         } else {
-                            alert("Xóa thật bại!")
+                            alert("Xóa thất bại!")
                         }
                     })
                     .catch(err => {

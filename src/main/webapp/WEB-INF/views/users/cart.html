@@ -1,3 +1,36 @@
 <div th:fragment="mainContent" class="cart-section">
-    <h2>Giỏ hàng</h2>
+    <h2 class="cart-title">Giỏ hàng</h2>
+    <div class="cart-table">
+        <table>
+            <thead >
+                <tr>
+                    <th>STT</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item, iterStat : ${cartItems}">
+                    <td th:text="${iterStat.index + 1}"></td>
+                    <td th:text="${item.product.name}"></td>
+                    <td th:text="${#numbers.formatDecimal(item.price, 1, 'DEFAULT', 0, 'DEFAULT')} + ' ₫'">
+                    <td>
+                        <input th:value="${item.quantity}" type="number" min="0" style="border: 1px solid #cccccc; padding: 8px; border-radius: 4px">
+                    </td>
+                    <td th:text="${#numbers.formatDecimal(item.price * item.quantity, 1, 'DEFAULT', 0, 'DEFAULT')} + ' ₫'"></td>
+                    <td>
+                        <button class="cart-delete-btn">Xóa</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="cart-total">
+        <p>Tổng tiền giỏ hàng: <span th:text="${#numbers.formatDecimal(cartTotal, 1, 'DEFAULT', 0, 'DEFAULT')} + ' đ'"></span></p>
+        <div></div>
+        <button type="button">Thanh toán</button>
+    </div>
 </div>

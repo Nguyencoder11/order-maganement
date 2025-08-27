@@ -13,9 +13,12 @@
         </div>
         <div class="left-header">
             <a th:href="@{/cart}" class="cart-link">
-                <i class="fa-solid fa-cart-shopping"></i> Giỏ hàng
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="cart-badge"
+                      th:text="${cartItemCount}"></span>
             </a>
 
+            <!-- ============= SU DUNG SESSION QUA MODEL 'loggedInUser' DE QUAN LY PHIEN DANG NHAP CUA USER ============ -->
             <!-- Neu chua dang nhap hien thi link dang nhap va dang xuat -->
             <div th:if="${loggedInUser == null}" class="unloggedUser">
                 <a th:href="@{/register}" class="register-link">Đăng ký</a>

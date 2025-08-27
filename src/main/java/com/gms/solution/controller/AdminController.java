@@ -23,7 +23,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.math.RoundingMode;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * AdminController.java
@@ -162,13 +164,15 @@ public class AdminController {
      */
     @GetMapping("/products/update/{id}")
     public ModelAndView updateProductView(@PathVariable Long id) {
+        ModelAndView mav = new ModelAndView("admin/admin-dashboard");
+        mav.addObject("content", "admin/update-product");
+
         Product product = productService.getProductById(id);
         if (product.getPrice() != null) {
             product.setPrice(product.getPrice().setScale(0, RoundingMode.DOWN));
         }
         List<Category> categories  = categoryService.getAllCategoryName();
-        ModelAndView mav = new ModelAndView("admin/admin-dashboard");
-        mav.addObject("content", "admin/update-product");
+
         mav.addObject("product", product);
         mav.addObject("categories", categories);
         return mav;
@@ -206,22 +210,48 @@ public class AdminController {
     @GetMapping("/products/filter")
     public ModelAndView filterProduct(@RequestParam(required = false) Long categoryId,
                                       @RequestParam(required = false) String priceRange) {
-        List<Product> products = productService.filterProducts(categoryId, priceRange);
-        List<Category> categories = categoryService.getAllCategoryName();
         ModelAndView mav = new ModelAndView("admin/admin-dashboard");
         mav.addObject("content", "admin/products");
+
+        List<Product> products = productService.filterProducts(categoryId, priceRange);
+        List<Category> categories = categoryService.getAllCategoryName();
         mav.addObject("products", products);
         mav.addObject("categories", categories);
         mav.addObject("categoryId", categoryId);
         mav.addObject("priceRange", priceRange);
+
         return mav;
     }
 
 
-
-
     /* =================================== QUAN LY NGUOI DUNG ===================================== */
+    // Xu ly xoa nguoi dung
+    @PostMapping("/users/delete/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return "redirect:/admin/users";
+    }
 
+    // Thay doi trang thai tai khoan cua nguoi dung (active/locked)
+    @PostMapping(value = "/users/toggle-status/{id}", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> toggleUserStatus(@PathVariable Long id) {
+        Map<String, Object> response = new HashMap<>();
+
+        User user = userService.findByUserId(id);
+
+        if (user != null) {
+            boolean current = Boolean.TRUE.equals(user.getEnabled());
+            user.setEnabled(!current);
+            userService.saveUser(user);
+            response.put("status", "success");
+            response.put("enabled", user.getEnabled());
+        } else {
+            response.put("status", "error");
+        }
+
+        return response;
+    }
 
 
 

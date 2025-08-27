@@ -5,10 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${pageTitle}"></title>
     <link rel="stylesheet" th:href="@{/resources/css/style.css}">
+    <link rel="stylesheet" th:href="@{/resources/css/chat.css}">
     <link rel="stylesheet" th:href="@{/resources/css/users/profile.css}">
     <link rel="stylesheet" th:href="@{/resources/css/users/profile-update.css}">
-    <script th:src="@{/resources/js/update-profile.js}"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" th:href="@{/resources/css/users/cart.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+          integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
 </head>
 <body>
     <header th:replace="~{fragments/header :: header}"></header>
@@ -16,7 +21,36 @@
     <main class="content">
         <div th:replace="~{${mainContent} :: mainContent}" class="fragment-content"></div>
     </main>
-
+    <div class="chat-area" id="chatBtn">
+        <i class="fa-solid fa-comment"></i>
+    </div>
+    <div class="chat-popup" id="chatPopup">
+        <div class="chat-header">
+            <span>Hỗ trợ trực tuyến</span>
+            <button id="closeChat">&times;</button>
+        </div>
+        <div class="chat-body">
+            <div class="messages" id="chatMessages"></div>
+            <div class="chat-input-area">
+                <input type="text" id="chatInput" placeholder="Nhập tin nhắn...">
+                <button id="sendBtn">Gửi</button>
+            </div>
+        </div>
+    </div>
     <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+    <script>
+        const chatBtn = document.getElementById("chatBtn");
+        const chatPopup = document.getElementById("chatPopup");
+        const closeChat = document.getElementById("closeChat");
+
+        chatBtn.addEventListener("click", () => {
+            chatPopup.style.display = 'flex'
+        });
+
+        closeChat.addEventListener("click", () => {
+            chatPopup.style.display = "none"; // đóng popup
+        });
+    </script>
 </body>
 </html>

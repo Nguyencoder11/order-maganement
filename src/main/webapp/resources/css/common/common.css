@@ -9,6 +9,7 @@
 body {
     font-family: Arial, sans-serif;
     color: #000;
+    position: relative;
 }
 
 .container {

@@ -89,6 +89,23 @@ input, button {
     text-align: center;
 }
 
+.cart-link {
+    display: inline-block;
+    position: relative;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -12px;
+    background: red;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 50%;
+}
+
 .left-header a {
     margin: 0 10px;
 }
@@ -129,6 +146,7 @@ input, button {
 
 .user-popup ul li a:hover {
     background: #20A920;
+    color: #fff;
 }
 
 .user-popup::before {

@@ -25,4 +25,6 @@ public interface IProductService {
     void deleteProduct(Long id);
 
     List<Product> filterProducts(Long categoryId, String priceRange);
+
+    Product findById(Long productId);
 }

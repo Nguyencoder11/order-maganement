@@ -25,9 +25,9 @@ public class ProductController {
     @GetMapping("/search?{search}")
     public ModelAndView search(@PathVariable String search) {
         ModelAndView mav = new ModelAndView("index");
-        mav.addObject("search", search);
-        mav.addObject("mainContent", "search");
         mav.addObject("pageTitle", "Search for " + search);
+        mav.addObject("mainContent", "search");
+        mav.addObject("search", search);
         return mav;
     }
 
