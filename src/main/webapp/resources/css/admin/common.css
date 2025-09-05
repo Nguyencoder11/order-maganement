@@ -509,3 +509,13 @@ input:checked + .slider:before {
 
 
 /* ============================= CHAT TAB STYLESHEET ================================ */
+.admin-btn {
+    background: #20A920;
+    color: #fff;
+    border-bottom-right-radius: inherit;
+}
+
+.admin-btn:hover {
+    background: #1a8a1a;
+    cursor: pointer;
+}

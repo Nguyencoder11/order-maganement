@@ -9,17 +9,16 @@
                              th:alt="${product.name}">
                     </div>
                     <div class="product-details">
-                        <p class="product-name" th:text="${product.name}"></p>
-                        <p class="product-description" th:text="${product.description}"></p>
+                        <p class="product-name" th:text="${product.name}"
+                           th:onclick="'window.location.href=\'/product/' + ${product.id} + '/detail\''">
+                        </p>
+<!--                        <p class="product-description" th:text="${product.description}"></p>-->
                         <!-- Set up hien thi gia san pham theo formatDecimal -->
                         <p class="product-price"
                            th:text="'Giá: '+ ${#numbers.formatDecimal(product.price, 1, 'DEFAULT', 0, 'DEFAULT')} + ' ₫'"></p>
                         <span class="rating-stars">
                             <i class="icon-star fa-solid fa-star"></i>
-                            <i class="icon-star fa-solid fa-star"></i>
-                            <i class="icon-star fa-solid fa-star"></i>
-                            <i class="icon-star fa-solid fa-star"></i>
-                            <i class="icon-star fa-solid fa-star"></i>
+                            4.8
                         </span>
                     </div>
                     <form method="post" th:action="@{/cart/add/{id}(id=${product.id})}">

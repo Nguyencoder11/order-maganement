@@ -65,13 +65,16 @@ input, button {
     color: #575757;
 }
 
-.search-box-area span {
+.search-box-area button {
     position: absolute;
-    right: 8px;
-    cursor: pointer;
+    right: 0; top: 0;
+    padding: 10px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    cursor: pointer
 }
 
-.search-box-area span i {
+.search-box-area button i {
     color: #000;
 }
 
@@ -162,7 +165,7 @@ input, button {
     display: block;
 }
 
-.product-view {
+.product-view, .see-product-detail {
     width: 100%;
     background: #ddd;
 }
@@ -195,7 +198,12 @@ input, button {
     padding: 16px;
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.25);
     max-height: 450px;
-    /*height: 400px;*/
+    transform: scale(1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.product-item:hover {
+    transform: scale(1.05);
 }
 
 .product-image {
@@ -214,6 +222,22 @@ input, button {
 
 .product-details {
     padding: 10px 0;
+}
+
+.product-details p {
+    margin: 0.325rem 0;
+}
+
+.product-details .product-name {
+    cursor: pointer;
+}
+
+.product-details .product-name:hover {
+    text-decoration: underline;
+}
+
+.product-details .rating-stars .icon-star {
+    color: #e0c30d;
 }
 
 .product-item button {

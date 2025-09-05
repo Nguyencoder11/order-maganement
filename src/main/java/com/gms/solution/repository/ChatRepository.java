@@ -23,4 +23,5 @@ import java.util.List;
 public interface ChatRepository extends JpaRepository<Message, Long> {
     List<Message> findBySenderAndReceiver(User sender, User receiver);
     List<Message> findByReceiver(User receiver);
+    List<Message> findBySender(User sender);
 }

@@ -7,6 +7,7 @@
 
 package com.gms.solution.service;
 
+import com.gms.solution.model.dto.ChatMessageDTO;
 import com.gms.solution.model.entity.Message;
 import com.gms.solution.model.entity.User;
 
@@ -18,6 +19,6 @@ import java.util.List;
  * @author Nguyen
  */
 public interface IChatService {
-    Message saveMessage(Message message);
+    void saveMessage(ChatMessageDTO chatMessageDto);
     List<Message> getMessages(User sender, User receiver);
 }

@@ -21,8 +21,11 @@ import java.util.List;
  */
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
+    // Lay ra tat ca san pham theo tung loai san pham
     @Query(name = "Category.findAllWithProducts")   // Goi lai NamedQuery
     List<Category> findAllWithProducts();
+
+    // Lay ra ten cac loai san pham
     @Query(name = "Category.getAllCategoryName")
     List<Category> getAllCategoryName();
 }

@@ -27,11 +27,11 @@ public class Message {
     Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sender_id", nullable = false)
+    @JoinColumn(name = "sender_id", nullable = true)
     User sender;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "receiver_id", nullable = false)
+    @JoinColumn(name = "receiver_id", nullable = true)
     User receiver;
 
     @Column(name = "content")
@@ -41,7 +41,7 @@ public class Message {
     LocalDateTime sentAt;
 
     @Column(name = "is_read")
-    Boolean isRead;
+    Boolean isRead = false;
 
     public Long getId() {
         return id;

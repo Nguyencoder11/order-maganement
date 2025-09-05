@@ -1,3 +1,40 @@
 <div th:fragment="mainContent" class="search-fragment">
-    <div ></div>
+    <div style="padding: 0 64px">
+        <h2 style="text-align: center; padding: 0.6325rem 0">Kết quả tìm kiếm cho "<span th:text="${search}"></span>"</h2>
+
+        <!-- Co san pham -->
+        <div class="product-items-wrapper" th:if="${!#lists.isEmpty(products)}">
+            <div class="product-item" th:each="product : ${products}">
+                <div class="product-image">
+                    <img class="product-img" th:src="${product.imagePath}"
+                         th:alt="${product.name}">
+                </div>
+                <div class="product-details">
+                    <p class="product-name" th:text="${product.name}"></p>
+                    <p class="product-description" th:text="${product.description}"></p>
+                    <!-- Set up hien thi gia san pham theo formatDecimal -->
+                    <p class="product-price"
+                       th:text="'Giá: '+ ${#numbers.formatDecimal(product.price, 1, 'DEFAULT', 0, 'DEFAULT')} + ' ₫'"></p>
+                    <span class="rating-stars">
+                            <i class="icon-star fa-solid fa-star"></i>
+                            <i class="icon-star fa-solid fa-star"></i>
+                            <i class="icon-star fa-solid fa-star"></i>
+                            <i class="icon-star fa-solid fa-star"></i>
+                            <i class="icon-star fa-solid fa-star"></i>
+                        </span>
+                </div>
+                <form method="post" th:action="@{/cart/add/{id}(id=${product.id})}">
+                    <button type="submit">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        Thêm vào giỏ hàng
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Khong co san pham -->
+        <div th:if="${#lists.isEmpty(products)}">
+            <p style="margin: 1rem 0; text-align: center">Không tìm thấy sản phẩm nào.</p>
+        </div>
+    </div>
 </div>

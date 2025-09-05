@@ -9,10 +9,12 @@ package com.gms.solution.controller;
 
 import com.gms.solution.model.entity.Category;
 import com.gms.solution.model.entity.Product;
+import com.gms.solution.model.entity.User;
 import com.gms.solution.service.ICategoryService;
 import com.gms.solution.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -41,7 +43,7 @@ public class HomeController {
 
     // Duong dan /home tra ve trang index.html
     @GetMapping("/home")
-    public ModelAndView home(HttpSession session) {
+    public ModelAndView home(HttpSession session, Model model) {
         ModelAndView mav = new ModelAndView("index");
         mav.addObject("loggedInUser", session.getAttribute("loggedInUser"));
         // Them hien thi san pham cho layout chung
@@ -50,6 +52,13 @@ public class HomeController {
 
         List<Category> categories = categoryService.getAllCategories();
         mav.addObject("categories", categories);
+
+        User loggedUser = (User) session.getAttribute("loggedInUser");
+        if (loggedUser != null) {
+            model.addAttribute("username", loggedUser.getUsername());
+        } else {
+            model.addAttribute("username", "Guest");
+        }
 
         return mav;
     }

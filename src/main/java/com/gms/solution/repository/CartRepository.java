@@ -21,5 +21,6 @@ import java.util.Optional;
  */
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long> {
+    // Lay thong tin gio hang theo nguoi dung
     Optional<Cart> findByUser(User user);
 }

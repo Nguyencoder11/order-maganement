@@ -130,7 +130,8 @@ public class ProductServiceImpl implements IProductService {
         System.out.println("Price: " + existingProduct.getPrice());
         System.out.println("Stock: " + existingProduct.getStock());
         System.out.println("Description: " + existingProduct.getDescription());
-        System.out.println("Category: " + (existingProduct.getCategory() != null ? existingProduct.getCategory().getName() : "null"));
+        System.out.println("Category: " + (existingProduct.getCategory() != null ? existingProduct.getCategory().getName()
+                                                                                 : "null"));
         System.out.println("ImagePath: " + existingProduct.getImagePath());
 
         productRepository.save(existingProduct);
@@ -159,6 +160,15 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public Product findById(Long productId) {
         return productRepository.findById(productId).orElse(null);
+    }
+
+    @Override
+    public List<Product> searchProducts(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return productRepository.findAll();
+        }
+
+        return productRepository.searchByKeyword(keyword);
     }
 
 }
