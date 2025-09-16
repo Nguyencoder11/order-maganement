@@ -1,17 +1,21 @@
+<!-- Trang hien thi doan chat voi nguoi dung cu the duoc cho
+     tu trang danh sach doan chat o chat.html -->
 <div th:fragment="content" class="chat-fragment">
     <div style="background: #fff; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,.2);
                 display: flex; flex-direction: column; height: 600px">
-        <div style="font-weight: 600; font-size: 1.4rem; background: #1a8a1a; color: #fff;
+        <div class="chat-header" style="font-weight: 600; font-size: 1.4rem; background: #1a8a1a; color: #fff;
                     border-top-left-radius: 4px; border-top-right-radius: 4px; display: flex;
-                    align-items: center; gap: 8px; padding: 10px">
+                    align-items: center; gap: 8px; padding: 10px; justify-content: unset">
             <img th:src="${user.imagePath}" alt="" style="width: 45px; height: 45px; border-radius: 50%">
             <span th:text="${user.username}"></span>
         </div>
-        <div class="admin-chat-content" style="flex: 1; padding: 10px"></div>
-        <div style="display: grid; grid-template-columns: 1fr auto; align-items: center;
+        <div class="chat-body">
+            <div class="messages admin-chat-content" style="flex: 1; padding: 10px; overflow-y: auto"></div>
+            <div class="chat-input-area" style="display: grid; grid-template-columns: 1fr auto; align-items: center;
                     border-bottom-left-radius: 4px; border-bottom-right-radius: 4px; border-top: 1px solid #ddd;">
-            <input type="text" id="adminInput" placeholder="Nhập tin nhắn..." style="padding: 10px">
-            <button class="admin-btn" id="sendBtn" style="padding: 10px 16px">Gửi</button>
+                <input type="text" id="adminInput" placeholder="Nhập tin nhắn..." style="padding: 10px">
+                <button class="admin-btn" id="sendBtn" style="padding: 10px 16px">Gửi</button>
+            </div>
         </div>
     </div>
 
@@ -59,7 +63,7 @@
                     sender: adminName,
                     receiver: receiverName,
                     content: content,
-                    sentAt: getCurrentTime()
+                    // sentAt: getCurrentTime()
                 }
                 stompClient.send("/app/chat", {}, JSON.stringify(chatMessage))
                 showMessage(adminName, content)
@@ -70,8 +74,14 @@
         function showMessage(sender, content) {
             const messages = document.querySelector(".admin-chat-content")
             const div = document.createElement("div")
-            div.classList.add("message")
-            div.innerHTML = `<strong>${sender}:</strong> ${content}`
+
+            if (sender === adminName) {
+                div.classList.add("message", "sent")
+            } else {
+                div.classList.add("message", "received")
+            }
+
+            div.innerHTML = `<strong>${sender === adminName ? 'Me' : receiverName}:</strong> ${content}`
             messages.appendChild(div)
             messages.scrollTop = messages.scrollHeight
         }

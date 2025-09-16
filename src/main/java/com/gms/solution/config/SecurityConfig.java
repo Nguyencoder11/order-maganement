@@ -7,6 +7,7 @@
 
 package com.gms.solution.config;
 
+import com.gms.solution.enums.RoleName;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,12 +30,13 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .antMatchers("/auth/login", "/register", "/css/**", "/js/**")
-                        .permitAll()
-                        .anyRequest().authenticated())
+                        .antMatchers("/", "/home", "/public/**").permitAll()    // Cho truy cap khong can login
+                        .antMatchers("/auth/**", "/register").hasAuthority(RoleName.ROLE_USER.name())   // Chi User ms truy cap duoc nhung endpoint nay
+                        .antMatchers("/admin/**").hasAuthority(RoleName.ROLE_ADMIN.name())  // Chi admin moi duoc truy cap duoc
+                        .anyRequest().authenticated())  // cac yeu cau khac yeu cau login
                 .formLogin(form -> form
-                        .loginPage("/auth/login")
-                        .defaultSuccessUrl("/home", true)
+                        .loginPage("/auth/login")   // Trang login custom
+                        .defaultSuccessUrl("/home", true)   // redirect sau khi login thanh cong
                         .permitAll())
                 .logout(logout -> logout.permitAll());
 

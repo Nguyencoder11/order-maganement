@@ -14,7 +14,6 @@ import com.gms.solution.repository.ChatRepository;
 import com.gms.solution.repository.UserRepository;
 import com.gms.solution.service.IChatService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -38,15 +37,17 @@ public class ChatServiceImpl implements IChatService {
     public void saveMessage(ChatMessageDTO chatMessageDto) {
         Message message = new Message();
 
-        User sender = null;
-        if (!"admin".equalsIgnoreCase(chatMessageDto.getSender())) {
-            sender = userRepository.findByEmail(chatMessageDto.getSender());
-        }
+        // Neu sender la admin -> set null
+        User sender = "admin".equalsIgnoreCase(chatMessageDto.getSender())
+                ? null
+                : userRepository.findByUsername(chatMessageDto.getSender());
 
-        User receiver = null;
-        if (!"admin".equalsIgnoreCase(chatMessageDto.getReceiver())) {
-            receiver = userRepository.findByUsername(chatMessageDto.getReceiver());
-        }
+
+        // Neu receiver la admin -> set null
+        User receiver = "admin".equalsIgnoreCase(chatMessageDto.getReceiver())
+                ? null
+                : userRepository.findByUsername(chatMessageDto.getReceiver());
+
 
         message.setSender(sender);
         message.setReceiver(receiver);

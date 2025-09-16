@@ -15,10 +15,9 @@
     <!-- File cau hinh spring core
      thuong dung cho cac bean chung Service, DAO, Datasource, Transaction Manager, ... -->
 
-    <!-- Scan cac package @Service, @Repository, @Config, @Websocket -->
+    <!-- Scan cac package Service, Repository, Config -->
     <context:component-scan base-package="com.gms.solution.service" />
     <context:component-scan base-package="com.gms.solution.config"/>
-    <context:component-scan base-package="com.gms.solution.websocket"/>
 
     <jpa:repositories base-package="com.gms.solution.repository"
                     entity-manager-factory-ref="entityManagerFactory"

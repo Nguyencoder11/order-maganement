@@ -1,0 +1,21 @@
+.message {
+    max-width: 70%;
+    width: fit-content;
+    clear: both;
+    margin: 4px 0;
+    padding: 10px;
+    border-radius: 20px;
+    word-wrap: break-word;
+}
+
+.message.sent {
+    background: #a8ffa5;
+    margin-left: auto;
+    text-align: left;
+}
+
+.message.received {
+    background: #cecece;
+    margin-right: auto;
+    text-align: left;
+}

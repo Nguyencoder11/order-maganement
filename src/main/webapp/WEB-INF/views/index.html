@@ -10,6 +10,7 @@
     <link rel="stylesheet" th:href="@{/resources/css/users/profile-update.css}">
     <link rel="stylesheet" th:href="@{/resources/css/users/cart.css}">
     <link rel="stylesheet" th:href="@{/resources/css/detail.css}">
+    <link rel="stylesheet" th:href="@{/resources/css/common/chat-common.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
           integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
           crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -21,9 +22,11 @@
     <main class="content">
         <div th:replace="~{${mainContent} :: mainContent}" class="fragment-content"></div>
     </main>
+    <!-- Bieu tuong chat -->
     <div class="chat-area" id="chatBtn">
         <i class="fa-solid fa-comment"></i>
     </div>
+    <!-- Popup chat voi admin hien len khi click vao bieu tuong chat -->
     <div class="chat-popup" id="chatPopup">
         <div class="chat-header">
             <span>Hỗ trợ trực tuyến</span>
@@ -89,7 +92,7 @@
                     sender: currentUser,
                     receiver: adminUser,
                     content: content,
-                    sentAt: getCurrentTime()
+                    // sentAt: getCurrentTime()
                 }
                 // Gui tin nhan toi /app/chat
                 stompClient.send('/app/chat', {}, JSON.stringify(chatMessage))
@@ -98,11 +101,20 @@
             }
         }
 
+        const message = document.querySelectorAll('.message.sent')
+        // message.style.textAlign = 'left'
+        console.log(message)
         function showMessage(sender, content) {
             const messages = document.getElementById("chatMessages")
             const div = document.createElement("div")
-            div.classList.add("message")
-            div.innerHTML = `<strong>${sender}:</strong> ${content}`
+
+            if (sender === currentUser) {
+                div.classList.add("message", "sent")
+            } else {
+                div.classList.add("message", "received")
+            }
+
+            div.innerHTML = `<strong>${sender === currentUser ? 'Me' : adminUser}:</strong> ${content}`
             messages.appendChild(div)
             messages.scrollTop = messages.scrollHeight
         }

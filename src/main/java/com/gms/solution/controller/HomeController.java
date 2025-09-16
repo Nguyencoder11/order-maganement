@@ -8,7 +8,6 @@
 package com.gms.solution.controller;
 
 import com.gms.solution.model.entity.Category;
-import com.gms.solution.model.entity.Product;
 import com.gms.solution.model.entity.User;
 import com.gms.solution.service.ICategoryService;
 import com.gms.solution.service.IProductService;

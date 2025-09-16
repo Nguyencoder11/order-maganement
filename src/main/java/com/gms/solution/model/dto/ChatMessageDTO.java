@@ -7,7 +7,7 @@
 
 package com.gms.solution.model.dto;
 
-import com.gms.solution.model.entity.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -26,5 +26,7 @@ public class ChatMessageDTO {
     private String sender;
     private String receiver;
     private String content;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime sentAt;
 }
