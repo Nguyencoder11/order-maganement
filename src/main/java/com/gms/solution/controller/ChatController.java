@@ -8,15 +8,16 @@
 package com.gms.solution.controller;
 
 import com.gms.solution.model.dto.ChatMessageDTO;
-import com.gms.solution.model.entity.Message;
-import com.gms.solution.model.entity.User;
-import com.gms.solution.repository.UserRepository;
 import com.gms.solution.service.IChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+
+import java.security.Principal;
+import java.time.LocalDateTime;
 
 /**
  * ChatController.java
@@ -30,31 +31,34 @@ public class ChatController {
     private IChatService chatService;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
     @MessageMapping("/chat")
-    public void processMessage(@Payload ChatMessageDTO chatMessageDTO) {
-        User sender = userRepository.findByUsername(chatMessageDTO.getSender());
-        User receiver = userRepository.findByUsername(chatMessageDTO.getReceiver());
+    @SendTo("/topic/messages")
+    public void processMessage(@Payload ChatMessageDTO chatMessageDTO,
+                               Principal principal) {
+        // Lấy tên người gửi từ Principal (nếu có) hoặc từ payload
+        String senderName = principal != null ? principal.getName()
+                                              : chatMessageDTO.getSender();
 
-        if (sender != null && receiver != null) {
-            return;
-        }
-
-        Message message = new Message();
-        message.setSender(sender);
-        message.setReceiver(receiver);
-        message.setContent(chatMessageDTO.getContent());
-        chatService.saveMessage(message);
-
-        // Gui toi nguoi nhan theo queue rieng
+        String receiverName = chatMessageDTO.getReceiver();
+        System.out.println("WS: " + senderName + " -> " + receiverName + ": " + chatMessageDTO.getContent());
         simpMessagingTemplate.convertAndSendToUser(
-                chatMessageDTO.getReceiver(),
+                receiverName,
                 "/queue/messages",
-                chatMessageDTO
+                new ChatMessageDTO(
+                        senderName,
+                        receiverName,
+                        chatMessageDTO.getContent(),
+                        LocalDateTime.now()
+                )
         );
+
+        System.out.println("Principal: " + principal.getName());
+        System.out.println("Receiver: " + receiverName);
+
+        chatMessageDTO.setSender(senderName);
+        chatMessageDTO.setSentAt(LocalDateTime.now());
+        chatService.saveMessage(chatMessageDTO);
     }
 }

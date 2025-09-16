@@ -24,8 +24,12 @@ import java.util.Optional;
  */
 @Repository
 public interface CartItemsRepository extends JpaRepository<CartItems, Integer> {
+    // Lay thong tin san pham trong gio hang
     Optional<CartItems> findByCartAndProduct(Cart cart, Product product);
+
+    // Lay danh sach cac san pham trong gio hang
     List<CartItems> findByCart(Cart cart);
 
+    // Lay san pham tu gio hang theo nguoi dung va productID
     CartItems findByCart_UserAndProductId(User user, Long productId);
 }

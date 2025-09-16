@@ -1,0 +1,70 @@
+.image-and-info, .detail-product, .describe-product, .evaluate-product {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.detail-product, .describe-product, .evaluate-product {
+    margin-top: 20px;
+}
+
+h3 {
+    margin: 0.325rem 0;
+}
+
+.image-wrap {
+    width: 500px;
+    height: 500px;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.image-wrap img {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+}
+
+.image-and-info {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 30px;
+}
+
+.common-info h3 {
+    font-size: 2rem;
+}
+
+.common-info .rating-stars i {
+    font-size: 0.9rem;
+}
+
+.common-info span {
+    margin-right: 16px;
+}
+
+.common-info button {
+    padding: 16px;
+    background: #20A920;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.common-info button:hover {
+    background: #1a8a1a;
+}
+
+.evaluate-product .evaluate-star i {
+    font-size: 1.5rem;
+    color: #c5c5c5;
+    cursor: pointer;
+}
+
+.evaluate-product button {
+    background: #20A920;
+}
+.evaluate-product button:hover {
+    background: #1a8a1a;
+
+}

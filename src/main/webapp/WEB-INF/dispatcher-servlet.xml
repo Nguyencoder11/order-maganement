@@ -14,6 +14,11 @@
     <!-- Kich hoat cac annotation -->
     <mvc:annotation-driven />
 
+    <!-- Quet package controller de dang ky cac bean -->
+    <context:component-scan base-package="com.gms.solution.controller" />
+    <!-- Quet package Websocket -->
+    <context:component-scan base-package="com.gms.solution.websocket"/>
+
     <!-- Cau hinh cho phep truy cap cac file trong thu muc resources o webapp -->
     <mvc:resources mapping="/resources/**" location="/resources/">
         <!-- luon load lai tai nguyen -->
@@ -28,9 +33,6 @@
     </mvc:resources>
 
     <mvc:default-servlet-handler />
-
-    <!-- Quet package controller de dang ky cac bean -->
-    <context:component-scan base-package="com.gms.solution.controller" />
 
     <!-- Cau hinh Thymeleaf xu ly view .html dat tai WEB-INF su dung ma hoa UTF-8 -->
     <bean id="templateResolver" class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">

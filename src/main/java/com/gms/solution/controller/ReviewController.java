@@ -7,7 +7,14 @@
 
 package com.gms.solution.controller;
 
+import com.gms.solution.service.ICartService;
+import com.gms.solution.service.IProductService;
+import com.gms.solution.service.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * ReviewController.java
@@ -15,5 +22,19 @@ import org.springframework.stereotype.Controller;
  * @author Nguyen
  */
 @Controller
+@RequestMapping("/evaluate")
 public class ReviewController {
+    @Autowired
+    private IProductService productService;
+
+    @Autowired
+    private IUserService userService;
+
+    @Autowired
+    private ICartService cartService;
+
+    @PostMapping("/product/{id}")
+    public String evaluateProduct(@PathVariable Long id) {
+        return "";
+    }
 }

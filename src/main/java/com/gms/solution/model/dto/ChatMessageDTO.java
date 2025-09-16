@@ -7,8 +7,10 @@
 
 package com.gms.solution.model.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 /**
  * ChatMessageDTO.java
@@ -17,8 +19,14 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ChatMessageDTO {
     private String sender;
     private String receiver;
     private String content;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime sentAt;
 }

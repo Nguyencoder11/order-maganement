@@ -5,10 +5,12 @@
         </div>
         <div class="search-box">
             <div class="search-box-area">
-                <input type="text" name="search-input" id="search-input" placeholder="Tìm kiếm sản phẩm..." th:value="''" />
-                <span>
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </span>
+                <form th:action="@{/search}" method="get">
+                    <input type="text" name="keyword" id="search-input" placeholder="Tìm kiếm sản phẩm..."/>
+                    <button type="submit">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </form>
             </div>
         </div>
         <div class="left-header">

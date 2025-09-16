@@ -27,4 +27,6 @@ public interface IProductService {
     List<Product> filterProducts(Long categoryId, String priceRange);
 
     Product findById(Long productId);
+
+    List<Product> searchProducts(String keyword);
 }

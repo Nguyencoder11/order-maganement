@@ -1,4 +1,108 @@
+<!-- Trang hien thi doan chat voi nguoi dung cu the duoc cho
+     tu trang danh sach doan chat o chat.html -->
 <div th:fragment="content" class="chat-fragment">
-    <h1 class="chat-title">Chat với người dùng ...</h1>
+    <div style="background: #fff; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,.2);
+                display: flex; flex-direction: column; height: 600px">
+        <div class="chat-header" style="font-weight: 600; font-size: 1.4rem; background: #1a8a1a; color: #fff;
+                    border-top-left-radius: 4px; border-top-right-radius: 4px; display: flex;
+                    align-items: center; gap: 8px; padding: 10px; justify-content: unset">
+            <img th:src="${user.imagePath}" alt="" style="width: 45px; height: 45px; border-radius: 50%">
+            <span th:text="${user.username}"></span>
+        </div>
+        <div class="chat-body">
+            <div class="messages admin-chat-content" style="flex: 1; padding: 10px; overflow-y: auto"></div>
+            <div class="chat-input-area" style="display: grid; grid-template-columns: 1fr auto; align-items: center;
+                    border-bottom-left-radius: 4px; border-bottom-right-radius: 4px; border-top: 1px solid #ddd;">
+                <input type="text" id="adminInput" placeholder="Nhập tin nhắn..." style="padding: 10px">
+                <button class="admin-btn" id="sendBtn" style="padding: 10px 16px">Gửi</button>
+            </div>
+        </div>
+    </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+
+    <script th:inline="javascript">
+        let stompClient = null
+        let adminName = /*[[${admin}]]*/ 'admin'
+        let receiverName =  /*[[${chatUser}]]*/ ''
+
+        function connect() {
+            const socket = new SockJS("/ws-chat")
+            stompClient = Stomp.over(socket)
+
+            stompClient.connect(
+                { username: adminName },
+                (frame) => {
+                console.log('Admin connected: ' + frame)
+
+                stompClient.subscribe("/user/queue/messages", (message) => {
+                    const msg = JSON.parse(message.body)
+                    showMessage(msg.sender, msg.content)
+                })
+            })
+        }
+
+        function selectUserChat(username) {
+            receiverName = username
+            console.log("Admin chating with: " + receiverName)
+        }
+
+        function sendMessage() {
+            const input = document.getElementById("adminInput")
+            const content = input.value
+
+            if (receiverName === "") {
+                alert("Choose user to chat")
+                return
+            }
+
+            if (content && stompClient) {
+                // Payload
+                const chatMessage = {
+                    sender: adminName,
+                    receiver: receiverName,
+                    content: content,
+                    // sentAt: getCurrentTime()
+                }
+                stompClient.send("/app/chat", {}, JSON.stringify(chatMessage))
+                showMessage(adminName, content)
+                input.value = ""
+            }
+        }
+
+        function showMessage(sender, content) {
+            const messages = document.querySelector(".admin-chat-content")
+            const div = document.createElement("div")
+
+            if (sender === adminName) {
+                div.classList.add("message", "sent")
+            } else {
+                div.classList.add("message", "received")
+            }
+
+            div.innerHTML = `<strong>${sender === adminName ? 'Me' : receiverName}:</strong> ${content}`
+            messages.appendChild(div)
+            messages.scrollTop = messages.scrollHeight
+        }
+
+        function getCurrentTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, "0");
+            const minutes = now.getMinutes().toString().padStart(2, "0");
+            return `${hours}:${minutes}`;
+        }
+
+        // Xu ly nhan nut "Gui"
+        document.getElementById("sendBtn").addEventListener('click', sendMessage)
+        // Xu ly nhan Enter
+        document.getElementById("adminInput").addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+                e.preventDefault()
+                sendMessage()
+            }
+        })
+
+        connect()
+    </script>
 </div>

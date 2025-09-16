@@ -112,6 +112,8 @@ public class AdminController {
                 break;
             case "chat":
                 mav.addObject("content", "admin/chat");
+                List<User> listUsers = userService.getAllUsers();
+                mav.addObject("listUsers", listUsers);
                 break;
             case "users":
                 List<User> users = userService.getAllUsers();
@@ -254,13 +256,16 @@ public class AdminController {
     }
 
 
-
     /* =================================== CHAT ===================================== */
-
-
-
-
-
-
+    @GetMapping("/chat/user/{id}")
+    public ModelAndView chatUser(@PathVariable Long id) {
+        ModelAndView mav = new ModelAndView("admin/admin-dashboard");
+        mav.addObject("content", "admin/chat-user");
+        User user = userService.findByUserId(id);
+        mav.addObject("user", user);
+        mav.addObject("chatUser", user.getUsername());
+        mav.addObject("admin", "admin");
+        return mav;
+    }
 
 }
