@@ -4,7 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fe7c2a0f-e9b4-4b7e-a35f-a4b4adde267d" name="Changes" comment="" />
+    <list default="true" id="fe7c2a0f-e9b4-4b7e-a35f-a4b4adde267d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/controller/CartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/controller/CartController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/controller/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/controller/OrderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/model/entity/Cart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/model/entity/Cart.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/model/entity/CartItems.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/model/entity/CartItems.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/model/entity/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/model/entity/Category.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/model/entity/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/model/entity/Message.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/model/entity/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/model/entity/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/model/entity/OrderItems.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/model/entity/OrderItems.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/model/entity/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/model/entity/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/model/entity/ProductReview.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/model/entity/ProductReview.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/model/entity/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/model/entity/Role.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/model/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/model/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/repository/CartItemsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/repository/CartItemsRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/service/ICartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/service/ICartService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/service/IOrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/service/IOrderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/service/PdfService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/service/PdfService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/service/impl/CartServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/service/impl/CartServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/service/impl/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/service/impl/OrderServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/users/cart.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/users/cart.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -243,7 +265,7 @@
       <workItem from="1757392304114" duration="7574000" />
       <workItem from="1757986950174" duration="27512000" />
       <workItem from="1758023846476" duration="4062000" />
-      <workItem from="1758073099083" duration="21664000" />
+      <workItem from="1758073099083" duration="21247000" />
     </task>
     <servers />
   </component>
