@@ -32,4 +32,6 @@ public interface CartItemsRepository extends JpaRepository<CartItems, Integer> {
 
     // Lay san pham tu gio hang theo nguoi dung va productID
     CartItems findByCart_UserAndProductId(User user, Long productId);
+
+    void deleteByCart_User(User user);
 }
