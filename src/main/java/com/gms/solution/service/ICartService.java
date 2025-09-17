@@ -7,10 +7,7 @@
 
 package com.gms.solution.service;
 
-import com.gms.solution.model.entity.Cart;
-import com.gms.solution.model.entity.CartItems;
-import com.gms.solution.model.entity.Product;
-import com.gms.solution.model.entity.User;
+import com.gms.solution.model.entity.*;
 
 import java.util.List;
 
@@ -29,4 +26,5 @@ public interface ICartService {
 
     void updateQuantity(User user, Product product, int quantity);
     void deleteCartItem(User user, Long productId);
+    void clearCart(User user);
 }

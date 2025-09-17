@@ -108,4 +108,28 @@ public class CartController {
         cartService.deleteCartItem(loggedInUser, productId);
         return "redirect:/cart";
     }
+
+    // Lấy danh sách sản phẩm trong giỏ hàng (API JSON)
+    @GetMapping("/items")
+    @ResponseBody
+    public List<CartItems> getCartItems(HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            throw new RuntimeException("User not logged in");
+        }
+        return cartService.getCartItems(loggedInUser);
+    }
+
+    // Lấy tổng tiền giỏ hàng (API JSON)
+    @GetMapping("/total")
+    @ResponseBody
+    public BigDecimal getCartTotal(HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            throw new RuntimeException("User not logged in");
+        }
+        return cartService.getCartItems(loggedInUser).stream()
+                .map(item -> item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 }

@@ -19,6 +19,7 @@
                     <td class="item-price"
                         th:data-price="${item.price}"
                         th:text="${#numbers.formatDecimal(item.price, 1, 'DEFAULT', 0, 'DEFAULT')} + ' ₫'">
+                    </td>
                     <td>
                         <input class="cart-qty"
                                th:value="${item.quantity}"
@@ -40,13 +41,17 @@
                Tổng tiền giỏ hàng:
                <span th:text="${#numbers.formatDecimal(cartTotal, 1, 'DEFAULT', 0, 'DEFAULT')} + ' đ'"></span>
            </p>
-           <button type="button">Mua hàng</button>
+           <button type="button" id="buy-btn" onclick="checkout()">Mua hàng</button>
         </div>
         <div></div>
     </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            bindCartEvents()
+        })
+
+        function bindCartEvents() {
             const qtyInputs = document.querySelectorAll(".cart-qty")
 
             qtyInputs.forEach(input => {
@@ -95,6 +100,37 @@
                 })
                 document.querySelector('.cart-total span').textContent = total.toLocaleString() + ' đ'
             }
-        })
+        }
+
+        function checkout() {
+            fetch('/orders/export', { method: 'POST' })
+                .then(res => {
+                    if (!res.ok) throw new Error("Xuat hoa don that bai")
+                    return res.blob()
+                })
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'invoice.pdf';
+                    a.click();
+
+                    refreshCart()
+                })
+                .catch(err => alert("Đã có lỗi xảy ra: " + err));
+        }
+
+        async function refreshCart() {
+            const tbody = document.querySelector('tbody')
+            tbody.innerHTML = `
+                 <tr>
+                    <td colspan="6" style="text-align:center; padding: 20px;">
+                        Giỏ hàng trống
+                    </td>
+                </tr>
+            `
+
+            document.querySelector(".cart-total span").textContent = '0 đ'
+        }
     </script>
 </div>

@@ -16,6 +16,7 @@ import com.gms.solution.repository.CartRepository;
 import com.gms.solution.service.ICartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -80,7 +81,10 @@ public class CartServiceImpl implements ICartService {
     @Override
     public List<CartItems> getCartItems(User user) {
         Cart cart = getOrCreateCart(user);
-        return cartItemsRepository.findByCart(cart);
+        return cartItemsRepository.findByCart(cart)
+                .stream()
+                .filter(ci -> ci.getQuantity() > 0)
+                .toList();
     }
 
     @Override
@@ -93,6 +97,7 @@ public class CartServiceImpl implements ICartService {
         CartItems item = cartItemsRepository.findByCart_UserAndProductId(user, product.getId());
         if (item != null) {
             item.setQuantity(quantity);
+            item.setUpdatedAt(LocalDateTime.now());
             cartItemsRepository.save(item);
         }
     }
@@ -107,5 +112,11 @@ public class CartServiceImpl implements ICartService {
             cart.setUpdatedAt(LocalDateTime.now());
             cartRepository.save(cart);
         }
+    }
+
+    @Override
+    @Transactional
+    public void clearCart(User user) {
+        cartItemsRepository.deleteByCart_User(user);
     }
 }
