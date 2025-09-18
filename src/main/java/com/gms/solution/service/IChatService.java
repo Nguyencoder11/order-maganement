@@ -20,5 +20,6 @@ import java.util.List;
  */
 public interface IChatService {
     void saveMessage(ChatMessageDTO chatMessageDto);
-    List<Message> getMessages(User sender, User receiver);
+    List<Message> getChatHistoryWithAdmin(User user);
+    void markMessageAsRead(User user);
 }

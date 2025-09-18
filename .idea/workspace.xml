@@ -4,9 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fe7c2a0f-e9b4-4b7e-a35f-a4b4adde267d" name="Changes" comment="">
+    <list default="true" id="fe7c2a0f-e9b4-4b7e-a35f-a4b4adde267d" name="Changes" comment="update">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/controller/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/controller/AdminController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/controller/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/controller/ChatController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/repository/ChatRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/repository/ChatRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/service/IChatService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/service/IChatService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/service/IUserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/service/IUserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/service/impl/ChatServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/service/impl/ChatServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/service/impl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin/chat-user.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin/chat-user.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin/chat.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin/chat.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/resources/css/admin/chat.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/css/admin/chat.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/controller/CartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/controller/CartController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/controller/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/controller/OrderController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/gms/solution/model/entity/Cart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gms/solution/model/entity/Cart.java" afterDir="false" />
@@ -264,6 +275,7 @@
       <workItem from="1757386599075" duration="5167000" />
       <workItem from="1757392304114" duration="7574000" />
       <workItem from="1757986950174" duration="27512000" />
+      <workItem from="1758159261797" duration="10824000" />
       <workItem from="1758023846476" duration="4062000" />
       <workItem from="1758073099083" duration="21247000" />
     </task>

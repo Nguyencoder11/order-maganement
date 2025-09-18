@@ -7,6 +7,7 @@
 
 package com.gms.solution.service;
 
+import com.gms.solution.model.dto.UserWithLastMessage;
 import com.gms.solution.model.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,4 +34,6 @@ public interface IUserService {
     void deleteUser(Long id);
 
     void saveUser(User user);
+
+    List<UserWithLastMessage> getAllUsersWithLastMessage();
 }
