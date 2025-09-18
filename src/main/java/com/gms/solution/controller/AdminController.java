@@ -13,6 +13,7 @@ import com.gms.solution.model.entity.Product;
 import com.gms.solution.model.entity.User;
 import com.gms.solution.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +46,9 @@ public class AdminController {
     private IUserService userService;
     @Autowired
     private IChatService chatService;
+    
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
 
 
     // Hien thi trang login cua admin
@@ -269,6 +273,43 @@ public class AdminController {
         chatService.markMessageAsRead(user);
 
         return mav;
+    }
+    
+    // Endpoint để admin gửi tin nhắn và cập nhật real-time
+    @PostMapping("/chat/send")
+    @ResponseBody
+    public Map<String, Object> sendMessage(@RequestParam String receiver, 
+                                          @RequestParam String content) {
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            // Tạo ChatMessageDTO
+            com.gms.solution.model.dto.ChatMessageDTO chatMessage = 
+                new com.gms.solution.model.dto.ChatMessageDTO("admin", receiver, content, java.time.LocalDateTime.now());
+            
+            // Lưu tin nhắn
+            chatService.saveMessage(chatMessage);
+            
+            // Gửi tin nhắn real-time đến user
+            simpMessagingTemplate.convertAndSendToUser(
+                receiver,
+                "/queue/messages",
+                chatMessage
+            );
+            
+            // Cập nhật danh sách chat real-time cho tất cả admin
+            List<UserWithLastMessage> updatedList = userService.getAllUsersWithLastMessage();
+            simpMessagingTemplate.convertAndSend("/topic/chat-list-update", updatedList);
+            
+            response.put("status", "success");
+            response.put("message", "Tin nhắn đã được gửi");
+            
+        } catch (Exception e) {
+            response.put("status", "error");
+            response.put("message", "Lỗi khi gửi tin nhắn: " + e.getMessage());
+        }
+        
+        return response;
     }
 
 }

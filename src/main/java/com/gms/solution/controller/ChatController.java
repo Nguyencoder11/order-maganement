@@ -58,6 +58,8 @@ public class ChatController {
 
         String receiverName = chatMessageDTO.getReceiver();
         System.out.println("WS: " + senderName + " -> " + receiverName + ": " + chatMessageDTO.getContent());
+        
+        // Gửi tin nhắn đến người nhận cụ thể
         simpMessagingTemplate.convertAndSendToUser(
                 receiverName,
                 "/queue/messages",
@@ -69,15 +71,43 @@ public class ChatController {
                 )
         );
 
-        List<UserWithLastMessage> updatedList = userService.getAllUsersWithLastMessage();
-        simpMessagingTemplate.convertAndSend("/topic/chat-list-update", updatedList);
-
-        System.out.println("Principal: " + principal.getName());
-        System.out.println("Receiver: " + receiverName);
-
+        // Lưu tin nhắn vào database
         chatMessageDTO.setSender(senderName);
         chatMessageDTO.setSentAt(LocalDateTime.now());
         chatService.saveMessage(chatMessageDTO);
+
+        // Cập nhật danh sách chat real-time cho tất cả admin
+        List<UserWithLastMessage> updatedList = userService.getAllUsersWithLastMessage();
+        
+        // Gửi cập nhật đến topic chung cho tất cả admin
+        simpMessagingTemplate.convertAndSend("/topic/chat-list-update", updatedList);
+        System.out.println("Sent update to /topic/chat-list-update");
+        
+        // Gửi cập nhật đến user destination cho admin cụ thể (nếu cần)
+        if ("admin".equalsIgnoreCase(receiverName)) {
+            simpMessagingTemplate.convertAndSendToUser("admin", "/queue/chat-list-update", updatedList);
+            System.out.println("Sent update to /user/admin/queue/chat-list-update");
+        }
+        
+        // Luôn gửi cập nhật đến user destination cho admin (để đảm bảo)
+        simpMessagingTemplate.convertAndSendToUser("admin", "/queue/chat-list-update", updatedList);
+        System.out.println("Sent update to /user/admin/queue/chat-list-update (always)");
+        
+        // Gửi cập nhật đến tất cả admin đang online
+        simpMessagingTemplate.convertAndSend("/topic/admin-chat-update", updatedList);
+        System.out.println("Sent update to /topic/admin-chat-update");
+
+        System.out.println("Principal: " + (principal != null ? principal.getName() : "null"));
+        System.out.println("Receiver: " + receiverName);
+        System.out.println("Updated chat list sent to all admins");
+        System.out.println("Chat list size: " + updatedList.size());
+        
+        // Debug: In ra thông tin tin nhắn chưa đọc
+        for (UserWithLastMessage user : updatedList) {
+            if (user.isHasUnread()) {
+                System.out.println("User " + user.getUsername() + " has unread message: " + user.getLastMessage());
+            }
+        }
     }
 
     @GetMapping("/chat/history/{username}")

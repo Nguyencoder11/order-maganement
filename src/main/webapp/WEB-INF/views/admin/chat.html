@@ -17,6 +17,45 @@
     <script>
         let stompClient = null
 
+        function updateChatList(message) {
+            const updatedUser = JSON.parse(message.body)
+            console.log("Received updated users:", updatedUser)
+            console.log("Number of users:", updatedUser.length)
+            
+            // Debug: In ra thông tin tin nhắn chưa đọc
+            updatedUser.forEach(user => {
+                if (user.hasUnread) {
+                    console.log("Unread message from " + user.username + ": " + user.lastMessage)
+                }
+            })
+            
+            const container = document.querySelector('.chat-fragment')
+            container.innerHTML = ''
+
+            updatedUser.forEach(user => {
+                const div = document.createElement('div')
+                div.className = 'chat-item'
+                if (user.hasUnread) div.classList.add('unread')
+
+                div.setAttribute('data-username', user.username)
+                div.onclick = () => {
+                    window.location.href = '/admin/chat/user/' + user.userId
+                }
+
+                // Tạo message hiển thị với style phù hợp
+                const messageClass = user.hasUnread ? 'font-bold' : ''
+                
+                div.innerHTML = `
+                    <div class="chat-avatar"><img src="${user.imagePath}" alt="avatar"></div>
+                    <div class="chat-info">
+                        <strong>${user.username}</strong>
+                        <p class="${messageClass}">${user.lastMessage}</p>
+                    </div>
+                `
+                container.appendChild(div)
+            })
+        }
+
         function connectForChatList() {
             const socket = new SockJS("/ws-chat")
             stompClient = Stomp.over(socket)
@@ -24,33 +63,34 @@
             stompClient.connect({username: 'admin'}, (frame) => {
                 console.log('Connected to WS for chat list: ' + frame)
 
+                // Subscribe topic chung cho tất cả admin
                 stompClient.subscribe("/topic/chat-list-update", (message) => {
-                    const updatedUser = JSON.parse(message.body)
-                    console.log("Received updated users:", updatedUser)
-                    const container = document.querySelector('.chat-fragment')
-                    container.innerHTML = ''
-
-                    updatedUser.forEach(user => {
-                        const div = document.createElement('div')
-                        div.className = 'chat-item'
-                        if (user.hasUnread) div.classList.add('unread')
-
-                        div.setAttribute('data-username', user.username)
-                        div.onclick = () => {
-                            window.location.href = '/admin/chat/user/' + user.userId
-                        }
-
-                        div.innerHTML = `
-                            <div class="chat-avatar"><img src="${user.imagePath}" alt="avatar"></div>
-                            <div class="chat-info">
-                                <strong>${user.username}</strong>
-                                <p>${user.lastMessage}</p>
-                            </div>
-                        `
-                        container.appendChild(div)
-                    })
+                    console.log("Received message on /topic/chat-list-update")
+                    updateChatList(message)
                 })
+                
+                // Subscribe user destination cho admin cụ thể
+                stompClient.subscribe("/user/queue/chat-list-update", (message) => {
+                    console.log("Received message on /user/queue/chat-list-update")
+                    updateChatList(message)
+                })
+                
+                // Subscribe topic mới cho admin
+                stompClient.subscribe("/topic/admin-chat-update", (message) => {
+                    console.log("Received message on /topic/admin-chat-update")
+                    updateChatList(message)
+                })
+            }, (error) => {
+                console.error('WebSocket connection error:', error)
+                // Thử kết nối lại sau 3 giây
+                setTimeout(() => {
+                    console.log('Attempting to reconnect...')
+                    connectForChatList()
+                }, 3000)
             })
         }
+        
+        // Gọi function connect khi trang load
+        connectForChatList()
     </script>
 </div>

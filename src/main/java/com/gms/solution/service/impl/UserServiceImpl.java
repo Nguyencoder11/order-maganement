@@ -189,12 +189,26 @@ public class UserServiceImpl implements IUserService {
                     .orElse(null);
 
             boolean hasUnread = false;
+            String displayMessage = "";
+            
             if (lastMsg != null) {
-                if (lastMsg.getReceiver() == null && Boolean.FALSE.equals(lastMsg.getIsRead())) {
+                // Kiểm tra tin nhắn chưa đọc: user gửi cho admin (sender != null, receiver == null) và chưa đọc
+                if (lastMsg.getSender() != null && lastMsg.getReceiver() == null && Boolean.FALSE.equals(lastMsg.getIsRead())) {
                     hasUnread = true;
                 }
-                System.out.println("User: " + u.getUsername() + ", Last Message: " + lastMsg.getContent()
+                
+                // Tạo message hiển thị với prefix phù hợp
+                if (lastMsg.getSender() == null) {
+                    // Admin gửi cho user
+                    displayMessage = "Me: " + lastMsg.getContent();
+                } else {
+                    // User gửi cho admin
+                    displayMessage = lastMsg.getContent();
+                }
+                
+                System.out.println("User: " + u.getUsername() + ", Last Message: " + displayMessage
                         + ", Sender=" + (lastMsg.getSender() != null ? lastMsg.getSender().getUsername() : "admin")
+                        + ", HasUnread=" + hasUnread
                         + ", SentAt=" + lastMsg.getSentAt());
             }
             System.out.println("User: " + u.getUsername() + ", hasUnread: " + hasUnread);
@@ -203,7 +217,7 @@ public class UserServiceImpl implements IUserService {
                     u.getId(),
                     u.getUsername(),
                     u.getImagePath(),
-                    lastMsg != null ? lastMsg.getContent() : "",
+                    displayMessage,
                     hasUnread
             ));
         }
