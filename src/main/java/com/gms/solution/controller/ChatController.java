@@ -57,7 +57,11 @@ public class ChatController {
                                               : chatMessageDTO.getSender();
 
         String receiverName = chatMessageDTO.getReceiver();
-        System.out.println("WS: " + senderName + " -> " + receiverName + ": " + chatMessageDTO.getContent());
+        System.out.println("=== CHAT MESSAGE RECEIVED ===");
+        System.out.println("Sender: " + senderName);
+        System.out.println("Receiver: " + receiverName);
+        System.out.println("Content: " + chatMessageDTO.getContent());
+        System.out.println("Principal: " + (principal != null ? principal.getName() : "null"));
         
         // Gửi tin nhắn đến người nhận cụ thể
         simpMessagingTemplate.convertAndSendToUser(
@@ -78,6 +82,14 @@ public class ChatController {
 
         // Cập nhật danh sách chat real-time cho tất cả admin
         List<UserWithLastMessage> updatedList = userService.getAllUsersWithLastMessage();
+        
+        System.out.println("=== SENDING REAL-TIME UPDATE ===");
+        System.out.println("Updated list size: " + updatedList.size());
+        for (UserWithLastMessage user : updatedList) {
+            if (user.isHasUnread()) {
+                System.out.println("User with unread: " + user.getUsername() + " - " + user.getLastMessage());
+            }
+        }
         
         // Gửi cập nhật đến topic chung cho tất cả admin
         simpMessagingTemplate.convertAndSend("/topic/chat-list-update", updatedList);
@@ -110,7 +122,7 @@ public class ChatController {
         }
     }
 
-    @GetMapping("/chat/history/{username}")
+    @GetMapping(value = "/chat/history/{username}", produces = "application/json; charset=utf-8")
     @ResponseBody
     public List<ChatMessageDTO> getHistoryChat(@PathVariable String username) {
         User user = userRepository.findByUsername(username);

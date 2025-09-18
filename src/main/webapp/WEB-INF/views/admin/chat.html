@@ -18,19 +18,28 @@
         let stompClient = null
 
         function updateChatList(message) {
+            console.log("=== RECEIVED CHAT LIST UPDATE ===")
+            console.log("Raw message:", message.body)
+            
             const updatedUser = JSON.parse(message.body)
-            console.log("Received updated users:", updatedUser)
+            console.log("Parsed users:", updatedUser)
             console.log("Number of users:", updatedUser.length)
             
             // Debug: In ra thông tin tin nhắn chưa đọc
             updatedUser.forEach(user => {
                 if (user.hasUnread) {
-                    console.log("Unread message from " + user.username + ": " + user.lastMessage)
+                    console.log("UNREAD MESSAGE from " + user.username + ": " + user.lastMessage)
                 }
             })
             
             const container = document.querySelector('.chat-fragment')
             container.innerHTML = ''
+            
+            // Thêm lại tiêu đề
+            const titleDiv = document.createElement('h1')
+            titleDiv.className = 'chat-title'
+            titleDiv.textContent = 'Danh sách tin nhắn'
+            container.appendChild(titleDiv)
 
             updatedUser.forEach(user => {
                 const div = document.createElement('div')
@@ -61,27 +70,30 @@
             stompClient = Stomp.over(socket)
 
             stompClient.connect({username: 'admin'}, (frame) => {
-                console.log('Connected to WS for chat list: ' + frame)
+                console.log('=== WEBSOCKET CONNECTED ===')
+                console.log('Frame:', frame)
 
                 // Subscribe topic chung cho tất cả admin
                 stompClient.subscribe("/topic/chat-list-update", (message) => {
-                    console.log("Received message on /topic/chat-list-update")
+                    console.log("=== RECEIVED MESSAGE ON /topic/chat-list-update ===")
                     updateChatList(message)
                 })
                 
                 // Subscribe user destination cho admin cụ thể
                 stompClient.subscribe("/user/queue/chat-list-update", (message) => {
-                    console.log("Received message on /user/queue/chat-list-update")
+                    console.log("=== RECEIVED MESSAGE ON /user/queue/chat-list-update ===")
                     updateChatList(message)
                 })
                 
                 // Subscribe topic mới cho admin
                 stompClient.subscribe("/topic/admin-chat-update", (message) => {
-                    console.log("Received message on /topic/admin-chat-update")
+                    console.log("=== RECEIVED MESSAGE ON /topic/admin-chat-update ===")
                     updateChatList(message)
                 })
+                
+                console.log('=== ALL SUBSCRIPTIONS SET UP ===')
             }, (error) => {
-                console.error('WebSocket connection error:', error)
+                console.error('=== WEBSOCKET CONNECTION ERROR ===', error)
                 // Thử kết nối lại sau 3 giây
                 setTimeout(() => {
                     console.log('Attempting to reconnect...')
@@ -90,7 +102,24 @@
             })
         }
         
-        // Gọi function connect khi trang load
-        connectForChatList()
+        // Đợi thư viện load xong rồi mới gọi function connect
+        window.addEventListener('load', function() {
+            // Kiểm tra xem SockJS đã load chưa
+            if (typeof SockJS !== 'undefined' && typeof Stomp !== 'undefined') {
+                console.log('Libraries loaded, connecting...')
+                connectForChatList()
+            } else {
+                console.error('SockJS or Stomp not loaded')
+                // Thử lại sau 1 giây
+                setTimeout(() => {
+                    if (typeof SockJS !== 'undefined' && typeof Stomp !== 'undefined') {
+                        console.log('Libraries loaded on retry, connecting...')
+                        connectForChatList()
+                    } else {
+                        console.error('Still cannot load libraries')
+                    }
+                }, 1000)
+            }
+        })
     </script>
 </div>

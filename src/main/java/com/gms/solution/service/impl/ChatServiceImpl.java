@@ -60,9 +60,12 @@ public class ChatServiceImpl implements IChatService {
 
         messageRepository.save(message);
 
-        System.out.println("Saved message: Sender=" + (sender != null ? sender.getUsername() : "admin")
-                + ", Content=" + chatMessageDto.getContent()
-                + ", SentAt=" + message.getSentAt());
+        System.out.println("=== MESSAGE SAVED ===");
+        System.out.println("Sender: " + (sender != null ? sender.getUsername() : "admin"));
+        System.out.println("Receiver: " + (receiver != null ? receiver.getUsername() : "admin"));
+        System.out.println("Content: " + chatMessageDto.getContent());
+        System.out.println("IsRead: " + message.getIsRead());
+        System.out.println("SentAt: " + message.getSentAt());
     }
 
     // Lấy lịch sử tin nhắn chat của người dùng vs admin
@@ -75,11 +78,19 @@ public class ChatServiceImpl implements IChatService {
     @Override
     public void markMessageAsRead(User user) {
         List<Message> messages = messageRepository.findBySenderAndReceiver(user, null); // user gửi cho admin
+        boolean hasUpdated = false;
+        
         for (Message message : messages) {
             if (!Boolean.TRUE.equals(message.getIsRead())) {
                 message.setIsRead(true);
                 messageRepository.save(message);
+                hasUpdated = true;
+                System.out.println("Marked message as read: " + message.getContent());
             }
+        }
+        
+        if (hasUpdated) {
+            System.out.println("Messages marked as read for user: " + user.getUsername());
         }
     }
 

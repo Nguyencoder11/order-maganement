@@ -24,6 +24,7 @@ import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 import org.springframework.http.server.ServerHttpRequest;
 
@@ -50,7 +51,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .withSockJS()
                 .setClientLibraryUrl("https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js");
     }
-
+    
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         // noi client subscribe de nhan tin
@@ -59,6 +60,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         config.setApplicationDestinationPrefixes("/app");
         // prefix ho tro gui rieng user
         config.setUserDestinationPrefix("/user");
+    }
+    
+    @Override
+    public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
+        // Cấu hình encoding UTF-8 cho WebSocket
+        registration.setMessageSizeLimit(64 * 1024);
+        registration.setSendBufferSizeLimit(512 * 1024);
+        registration.setSendTimeLimit(20 * 1000);
     }
 
     @Override

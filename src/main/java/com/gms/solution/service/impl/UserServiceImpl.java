@@ -206,10 +206,14 @@ public class UserServiceImpl implements IUserService {
                     displayMessage = lastMsg.getContent();
                 }
                 
-                System.out.println("User: " + u.getUsername() + ", Last Message: " + displayMessage
-                        + ", Sender=" + (lastMsg.getSender() != null ? lastMsg.getSender().getUsername() : "admin")
-                        + ", HasUnread=" + hasUnread
-                        + ", SentAt=" + lastMsg.getSentAt());
+                System.out.println("=== USER WITH LAST MESSAGE ===");
+                System.out.println("User: " + u.getUsername());
+                System.out.println("Last Message: " + displayMessage);
+                System.out.println("Sender: " + (lastMsg.getSender() != null ? lastMsg.getSender().getUsername() : "admin"));
+                System.out.println("Receiver: " + (lastMsg.getReceiver() != null ? lastMsg.getReceiver().getUsername() : "admin"));
+                System.out.println("IsRead: " + lastMsg.getIsRead());
+                System.out.println("HasUnread: " + hasUnread);
+                System.out.println("SentAt: " + lastMsg.getSentAt());
             }
             System.out.println("User: " + u.getUsername() + ", hasUnread: " + hasUnread);
 

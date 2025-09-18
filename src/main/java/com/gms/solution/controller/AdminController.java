@@ -270,13 +270,24 @@ public class AdminController {
         mav.addObject("chatUser", user.getUsername());
         mav.addObject("admin", "admin");
 
+        // Đánh dấu tin nhắn đã đọc
         chatService.markMessageAsRead(user);
+        
+        // Gửi cập nhật real-time sau khi đánh dấu đã đọc
+        List<UserWithLastMessage> updatedList = userService.getAllUsersWithLastMessage();
+        simpMessagingTemplate.convertAndSend("/topic/chat-list-update", updatedList);
+        simpMessagingTemplate.convertAndSend("/topic/admin-chat-update", updatedList);
+        simpMessagingTemplate.convertAndSendToUser("admin", "/queue/chat-list-update", updatedList);
+        
+        System.out.println("=== MESSAGES MARKED AS READ ===");
+        System.out.println("User: " + user.getUsername());
+        System.out.println("Updated list sent to all admins");
 
         return mav;
     }
     
     // Endpoint để admin gửi tin nhắn và cập nhật real-time
-    @PostMapping("/chat/send")
+    @PostMapping(value = "/chat/send", produces = "application/json; charset=utf-8")
     @ResponseBody
     public Map<String, Object> sendMessage(@RequestParam String receiver, 
                                           @RequestParam String content) {
