@@ -7,13 +7,11 @@
 
 package com.gms.solution.controller;
 
+import com.gms.solution.model.dto.UserWithLastMessage;
 import com.gms.solution.model.entity.Category;
 import com.gms.solution.model.entity.Product;
 import com.gms.solution.model.entity.User;
-import com.gms.solution.service.IAdminService;
-import com.gms.solution.service.ICategoryService;
-import com.gms.solution.service.IProductService;
-import com.gms.solution.service.IUserService;
+import com.gms.solution.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,6 +43,8 @@ public class AdminController {
     private ICategoryService categoryService;
     @Autowired
     private IUserService userService;
+    @Autowired
+    private IChatService chatService;
 
 
     // Hien thi trang login cua admin
@@ -112,7 +112,7 @@ public class AdminController {
                 break;
             case "chat":
                 mav.addObject("content", "admin/chat");
-                List<User> listUsers = userService.getAllUsers();
+                List<UserWithLastMessage> listUsers = userService.getAllUsersWithLastMessage();
                 mav.addObject("listUsers", listUsers);
                 break;
             case "users":
@@ -265,6 +265,9 @@ public class AdminController {
         mav.addObject("user", user);
         mav.addObject("chatUser", user.getUsername());
         mav.addObject("admin", "admin");
+
+        chatService.markMessageAsRead(user);
+
         return mav;
     }
 
