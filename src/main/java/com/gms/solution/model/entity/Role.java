@@ -7,11 +7,14 @@
 
 package com.gms.solution.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gms.solution.enums.RoleName;
 import javax.persistence.*;
-import lombok.AccessLevel;
+
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +24,9 @@ import java.util.List;
  */
 @Entity
 @Table(name = "roles")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Role {
     @Id
@@ -32,29 +38,7 @@ public class Role {
     RoleName roleName;
 
     @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
-    List<User> users;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public RoleName getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(RoleName roleName) {
-        this.roleName = roleName;
-    }
-
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
+    @ToString.Exclude
+    @JsonIgnore // Tranh vong lap khi serialize
+    List<User> users = new ArrayList<>();
 }
