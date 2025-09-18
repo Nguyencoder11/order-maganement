@@ -1,6 +1,12 @@
 <!-- Trang hien thi doan chat voi nguoi dung cu the duoc cho
      tu trang danh sach doan chat o chat.html -->
 <div th:fragment="content" class="chat-fragment">
+    <div class="go-back" onclick="window.location.href='/admin/chat'">
+        <span>
+            <i class="fa-solid fa-arrow-left"></i>
+            Back
+        </span>
+    </div>
     <div style="background: #fff; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,.2);
                 display: flex; flex-direction: column; height: 600px">
         <div class="chat-header" style="font-weight: 600; font-size: 1.4rem; background: #1a8a1a; color: #fff;
@@ -38,13 +44,13 @@
         function showMessage(sender, content, messagesContainer = chatMessagesEl) {
             const div = document.createElement("div")
 
-            if (sender === adminName) {
+            if (sender === 'Me' || sender === adminName) {
                 div.classList.add("message", "sent")
             } else {
                 div.classList.add("message", "received")
             }
 
-            div.innerHTML = `<strong>${sender === adminName ? 'Me' : receiverName}:</strong> ${content}`
+            div.innerHTML = `<strong>${sender}:</strong> ${content}`
             messagesContainer.appendChild(div)
             messagesContainer.scrollTop = messagesContainer.scrollHeight
         }
@@ -55,7 +61,11 @@
                 const response = await fetch(`/chat/history/${receiverName}`)
                 const messages = await response.json()
                 chatMessagesEl.innerHTML = ''
-                messages.forEach(msg => showMessage(msg.sender, msg.content))
+                messages.forEach(msg => {
+                    // Hiển thị tin nhắn với prefix phù hợp
+                    const displaySender = msg.sender === adminName ? 'Me' : receiverName
+                    showMessage(displaySender, msg.content)
+                })
             } catch (e) {
                 console.error("Load chat history failed", e)
             }
@@ -70,7 +80,8 @@
 
                 stompClient.subscribe("/user/queue/messages", (message) => {
                     const msg = JSON.parse(message.body)
-                    showMessage(msg.sender, msg.content)
+                    // Hiển thị tin nhắn từ user với tên user
+                    showMessage(receiverName, msg.content)
                 })
             })
         }
@@ -90,17 +101,28 @@
                 return
             }
 
-            if (content && stompClient) {
-                // Payload
-                const chatMessage = {
-                    sender: adminName,
-                    receiver: receiverName,
-                    content: content,
-                    // sentAt: getCurrentTime()
-                }
-                stompClient.send("/app/chat", {}, JSON.stringify(chatMessage))
-                showMessage(adminName, content)
-                chatInputEl.value = ""
+            if (content) {
+                // Gửi tin nhắn qua REST API để đảm bảo cập nhật real-time
+                fetch('/admin/chat/send', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `receiver=${receiverName}&content=${encodeURIComponent(content)}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        showMessage('Me', content)
+                        chatInputEl.value = ""
+                    } else {
+                        alert('Lỗi: ' + data.message)
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error)
+                    alert('Có lỗi xảy ra khi gửi tin nhắn')
+                })
             }
         }
 

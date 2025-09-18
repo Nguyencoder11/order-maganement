@@ -520,3 +520,18 @@ input:checked + .slider:before {
     background: #1a8a1a;
     cursor: pointer;
 }
+
+.go-back {
+    margin-bottom: 10px;
+}
+
+.go-back span {
+    display: inline-flex;
+    gap: 10px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.go-back span:hover {
+    color: #1a8a1a;
+}
