@@ -10,12 +10,16 @@ package com.gms.solution.service.impl;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.gms.solution.enums.RoleName;
+import com.gms.solution.model.dto.UserWithLastMessage;
+import com.gms.solution.model.entity.Message;
 import com.gms.solution.model.entity.Role;
 import com.gms.solution.model.entity.User;
+import com.gms.solution.repository.ChatRepository;
 import com.gms.solution.repository.RoleRepository;
 import com.gms.solution.repository.UserRepository;
 import com.gms.solution.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +32,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +50,9 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private ChatRepository messageRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -165,5 +174,40 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void saveUser(User user) {
         userRepository.save(user);
+    }
+
+    // Lấy tin nhắn mới nhất người dùng gửi tới
+    @Override
+    public List<UserWithLastMessage> getAllUsersWithLastMessage() {
+        List<User> users = userRepository.findAll();
+        List<UserWithLastMessage> result = new ArrayList<>();
+
+        for (User u : users) {
+            Message lastMsg = messageRepository.findLastMessage(u.getId(), PageRequest.of(0,1))
+                    .stream()
+                    .findFirst()
+                    .orElse(null);
+
+            boolean hasUnread = false;
+            if (lastMsg != null) {
+                if (lastMsg.getReceiver() == null && Boolean.FALSE.equals(lastMsg.getIsRead())) {
+                    hasUnread = true;
+                }
+                System.out.println("User: " + u.getUsername() + ", Last Message: " + lastMsg.getContent()
+                        + ", Sender=" + (lastMsg.getSender() != null ? lastMsg.getSender().getUsername() : "admin")
+                        + ", SentAt=" + lastMsg.getSentAt());
+            }
+            System.out.println("User: " + u.getUsername() + ", hasUnread: " + hasUnread);
+
+            result.add(new UserWithLastMessage(
+                    u.getId(),
+                    u.getUsername(),
+                    u.getImagePath(),
+                    lastMsg != null ? lastMsg.getContent() : "",
+                    hasUnread
+            ));
+        }
+
+        return result;
     }
 }

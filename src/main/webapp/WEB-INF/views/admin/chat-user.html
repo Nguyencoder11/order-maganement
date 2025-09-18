@@ -27,13 +27,45 @@
         let adminName = /*[[${admin}]]*/ 'admin'
         let receiverName =  /*[[${chatUser}]]*/ ''
 
+        const chatMessagesEl = document.querySelector(".admin-chat-content")
+        const chatInputEl = document.getElementById('adminInput')
+        const sendBtnEl = document.getElementById('sendBtn')
+
+        if (receiverName) {
+            selectUserChat(receiverName)
+        }
+
+        function showMessage(sender, content, messagesContainer = chatMessagesEl) {
+            const div = document.createElement("div")
+
+            if (sender === adminName) {
+                div.classList.add("message", "sent")
+            } else {
+                div.classList.add("message", "received")
+            }
+
+            div.innerHTML = `<strong>${sender === adminName ? 'Me' : receiverName}:</strong> ${content}`
+            messagesContainer.appendChild(div)
+            messagesContainer.scrollTop = messagesContainer.scrollHeight
+        }
+
+        async function loadChatHistory() {
+            if (!receiverName) return
+            try {
+                const response = await fetch(`/chat/history/${receiverName}`)
+                const messages = await response.json()
+                chatMessagesEl.innerHTML = ''
+                messages.forEach(msg => showMessage(msg.sender, msg.content))
+            } catch (e) {
+                console.error("Load chat history failed", e)
+            }
+        }
+
         function connect() {
             const socket = new SockJS("/ws-chat")
             stompClient = Stomp.over(socket)
 
-            stompClient.connect(
-                { username: adminName },
-                (frame) => {
+            stompClient.connect({ username: adminName }, (frame) => {
                 console.log('Admin connected: ' + frame)
 
                 stompClient.subscribe("/user/queue/messages", (message) => {
@@ -46,13 +78,14 @@
         function selectUserChat(username) {
             receiverName = username
             console.log("Admin chating with: " + receiverName)
+            chatMessagesEl.innerHTML = ''
+            loadChatHistory()
         }
 
         function sendMessage() {
-            const input = document.getElementById("adminInput")
-            const content = input.value
+            const content = chatInputEl.value
 
-            if (receiverName === "") {
+            if (!receiverName) {
                 alert("Choose user to chat")
                 return
             }
@@ -67,23 +100,8 @@
                 }
                 stompClient.send("/app/chat", {}, JSON.stringify(chatMessage))
                 showMessage(adminName, content)
-                input.value = ""
+                chatInputEl.value = ""
             }
-        }
-
-        function showMessage(sender, content) {
-            const messages = document.querySelector(".admin-chat-content")
-            const div = document.createElement("div")
-
-            if (sender === adminName) {
-                div.classList.add("message", "sent")
-            } else {
-                div.classList.add("message", "received")
-            }
-
-            div.innerHTML = `<strong>${sender === adminName ? 'Me' : receiverName}:</strong> ${content}`
-            messages.appendChild(div)
-            messages.scrollTop = messages.scrollHeight
         }
 
         function getCurrentTime() {
@@ -94,9 +112,9 @@
         }
 
         // Xu ly nhan nut "Gui"
-        document.getElementById("sendBtn").addEventListener('click', sendMessage)
+        sendBtnEl.addEventListener('click', sendMessage)
         // Xu ly nhan Enter
-        document.getElementById("adminInput").addEventListener("keypress", function (e) {
+        chatInputEl.addEventListener("keypress", function (e) {
             if (e.key === "Enter") {
                 e.preventDefault()
                 sendMessage()

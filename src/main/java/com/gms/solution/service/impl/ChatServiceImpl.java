@@ -33,6 +33,7 @@ public class ChatServiceImpl implements IChatService {
     @Autowired
     private UserRepository userRepository;
 
+    // Lưu tin nhắn
     @Override
     public void saveMessage(ChatMessageDTO chatMessageDto) {
         Message message = new Message();
@@ -58,14 +59,28 @@ public class ChatServiceImpl implements IChatService {
         message.setIsRead(false);
 
         messageRepository.save(message);
+
+        System.out.println("Saved message: Sender=" + (sender != null ? sender.getUsername() : "admin")
+                + ", Content=" + chatMessageDto.getContent()
+                + ", SentAt=" + message.getSentAt());
     }
 
+    // Lấy lịch sử tin nhắn chat của người dùng vs admin
     @Override
-    public List<Message> getMessages(User sender, User receiver) {
-        return messageRepository.findBySenderAndReceiver(sender, receiver);
+    public List<Message> getChatHistoryWithAdmin(User user) {
+        return messageRepository.findChatHistory(user.getId());
     }
 
-    public List<Message> getMessagesByUser(User user) {
-        return messageRepository.findByReceiver(user);
+    // Đánh dấu tin nhắn đã đọc
+    @Override
+    public void markMessageAsRead(User user) {
+        List<Message> messages = messageRepository.findBySenderAndReceiver(user, null); // user gửi cho admin
+        for (Message message : messages) {
+            if (!Boolean.TRUE.equals(message.getIsRead())) {
+                message.setIsRead(true);
+                messageRepository.save(message);
+            }
+        }
     }
+
 }

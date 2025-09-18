@@ -20,6 +20,11 @@
     background: #ceffb8;
 }
 
+.chat-item.unread {
+    font-weight: bold;
+    background: #f0f8ff;
+}
+
 .chat-avatar {
     width: 75px;
     height: 75px;
